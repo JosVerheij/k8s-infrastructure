@@ -13,7 +13,7 @@ spec:
     helm:
       releaseName: cilium
       valueFiles:
-        - values-production.yaml
+      - values-production.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
