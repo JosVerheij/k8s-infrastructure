@@ -11,7 +11,7 @@ spec:
     repoURL: https://helm.cilium.io/
     targetRevision: 1.17.3
     helm:
-      releaseName: sealed-secrets
+      releaseName: cilium
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
