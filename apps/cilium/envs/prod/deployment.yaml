@@ -1,0 +1,50 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cilium
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: cilium
+    repoURL: https://helm.cilium.io/
+    targetRevision: 1.17.3
+    helm:
+      releaseName: cilium
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: kube-system
+  values:
+    ipam:
+      mode: kubernetes
+    hostFirewall:
+      enabled: true
+    hubble:
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+    kubeProxyReplacement: strict
+    securityContext:
+      capabilities:
+        ciliumAgent:
+        - CHOWN
+        - KILL
+        - NET_ADMIN
+        - NET_RAW
+        - IPC_LOCK
+        - SYS_ADMIN
+        - SYS_RESOURCE
+        - DAC_OVERRIDE
+        - FOWNER
+        - SETGID
+        - SETUID
+        cleanCiliumState:
+        - NET_ADMIN
+        - SYS_ADMIN
+        - SYS_RESOURCE
+    cgroup:
+      autoMount:
+        enabled: true
+      hostRoot: /sys/fs/cgroup
