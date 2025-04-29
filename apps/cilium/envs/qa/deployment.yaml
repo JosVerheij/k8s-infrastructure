@@ -14,4 +14,3 @@ spec:
       releaseName: cilium
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: kube-system
