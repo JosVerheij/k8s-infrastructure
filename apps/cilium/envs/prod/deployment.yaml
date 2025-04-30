@@ -11,41 +11,41 @@ spec:
     repoURL: https://helm.cilium.io/
     targetRevision: 1.17.3
     helm:
-      valuesObject:
-        ipam:
-          mode: kubernetes
-        hostFirewall:
-          enabled: true
-        hubble:
-          relay:
-            enabled: true
-          ui:
-            enabled: true
-        kubeProxyReplacement: true
-        securityContext:
-          capabilities:
-            ciliumAgent:
-            - CHOWN
-            - KILL
-            - NET_ADMIN
-            - NET_RAW
-            - IPC_LOCK
-            - SYS_ADMIN
-            - SYS_RESOURCE
-            - DAC_OVERRIDE
-            - FOWNER
-            - SETGID
-            - SETUID
-            cleanCiliumState:
-            - NET_ADMIN
-            - SYS_ADMIN
-            - SYS_RESOURCE
-        cgroup:
-          autoMount:
-            enabled: true
-          hostRoot: /sys/fs/cgroup
-        k8sServiceHost: kubernetes.default.svc
-        k8sServicePort: 6443
+      # valuesObject:
+      #   ipam:
+      #     mode: kubernetes
+      #   hostFirewall:
+      #     enabled: true
+      #   hubble:
+      #     relay:
+      #       enabled: true
+      #     ui:
+      #       enabled: true
+      #   kubeProxyReplacement: true
+      #   securityContext:
+      #     capabilities:
+      #       ciliumAgent:
+      #       - CHOWN
+      #       - KILL
+      #       - NET_ADMIN
+      #       - NET_RAW
+      #       - IPC_LOCK
+      #       - SYS_ADMIN
+      #       - SYS_RESOURCE
+      #       - DAC_OVERRIDE
+      #       - FOWNER
+      #       - SETGID
+      #       - SETUID
+      #       cleanCiliumState:
+      #       - NET_ADMIN
+      #       - SYS_ADMIN
+      #       - SYS_RESOURCE
+      #   cgroup:
+      #     autoMount:
+      #       enabled: true
+      #     hostRoot: /sys/fs/cgroup
+      #   k8sServiceHost: kubernetes.default.svc
+      #   k8sServicePort: 6443
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
