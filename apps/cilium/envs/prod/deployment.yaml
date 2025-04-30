@@ -11,9 +11,9 @@ spec:
     repoURL: https://helm.cilium.io/
     targetRevision: 1.17.3
     helm:
-      # valuesObject:
-      #   ipam:
-      #     mode: kubernetes
+      valuesObject:
+        ipam:
+          mode: kubernetes
       #   hostFirewall:
       #     enabled: true
       #   hubble:
