@@ -1,4 +1,4 @@
-
+namespaceOverride: cilium-prod
 operator:
   replicas: 1
 ipam:

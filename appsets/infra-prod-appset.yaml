@@ -24,17 +24,12 @@ spec:
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
         path: '{{.path.path}}'
-      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        path: 'apps/{{ index .path.segments 1 }}/chart'
-        targetRevision: HEAD
+        ref: values
         helm:
           valueFiles:
-          - '$values/apps/{{index .path.segments 1}}/chart/values.yaml'
+          - '$values/{{ .path.path }}/values.yaml'
           - '$values/apps/{{index .path.segments 1}}/base/values-common.yaml'
-          - '$values/apps/{{index .path.segments 1}}/envs/{{index .path.segments 3}}/values-{{index .path.segments 3}}.yaml'
-      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        targetRevision: HEAD
-        ref: values
+          - '$values/{{ .path.path }}/values-{{index .path.segments 3}}.yaml'
 
       # Destination cluster and namespace to deploy the application
       destination:
