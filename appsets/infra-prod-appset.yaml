@@ -20,7 +20,7 @@ spec:
       project: default
 
       # Source of the application manifests
-      sources:
+      source:
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
         path: '{{.path.path}}'
