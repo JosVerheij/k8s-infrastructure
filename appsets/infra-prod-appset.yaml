@@ -25,7 +25,7 @@ spec:
         targetRevision: HEAD
         path: '{{.path.path}}'
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        chart: 'apps/{{ index .path.segments 1 }}/chart'
+        path: 'apps/{{ index .path.segments 1 }}/chart'
         targetRevision: HEAD
         helm:
           valueFiles:
