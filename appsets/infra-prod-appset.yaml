@@ -20,16 +20,18 @@ spec:
       project: default
 
       # Source of the application manifests
-      source:
+      sources:
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
         path: '{{.path.path}}'
-        ref: values
         helm:
           valueFiles:
           - '$values/{{ .path.path }}/values.yaml'
           - '$values/apps/{{index .path.segments 1}}/base/values-common.yaml'
           - '$values/{{ .path.path }}/values-{{index .path.segments 3}}.yaml'
+        - repoURL: https://github.com/josverheij/k8s-infrastructure.git
+          targetRevision: HEAD
+          ref: values
 
       # Destination cluster and namespace to deploy the application
       destination:
