@@ -21,9 +21,9 @@ spec:
 
       # Source of the application manifests
       sources:
-      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        targetRevision: HEAD
-        path: '{{.path.path}}'
+      # - repoURL: https://github.com/josverheij/k8s-infrastructure.git
+      #   targetRevision: HEAD
+      #   path: '{{.path.path}}'
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         chart: 'apps/{{ index .path.segment 1 }}/chart'
         targetRevision: HEAD
