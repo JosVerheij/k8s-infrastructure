@@ -11,7 +11,7 @@ spec:
       repoURL: https://github.com/josverheij/k8s-infrastructure.git
       revision: HEAD
       directories:
-      - path: apps/*/envs/prod     
+      - path: apps/*/envs/prod
   template:      
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}' 
@@ -20,11 +20,22 @@ spec:
       project: default
 
       # Source of the application manifests
-      source:
-        repoURL: https://github.com/josverheij/k8s-infrastructure.git
+      sources:
+      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
         path: '{{.path.path}}'
-      
+      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
+        chart: 'apps/{{ index .path.segment 1 }}/chart'
+        targetRevision: HEAD
+        helm:
+          valueFiles:
+          - '$values/apps/{{index .path.segment 1}}/chart/values.yaml'
+          - '$values/apps/{{index .path.segment 1}}/base/values-common.yaml'
+          - '$values/apps/{{index .path.segment 1}}/envs/{{index .path.segments 3}}/values-{{index .path.segments 3}}.yaml'
+      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
+        targetRevision: HEAD
+        ref: values
+
       # Destination cluster and namespace to deploy the application
       destination:
         server: https://kubernetes.default.svc
