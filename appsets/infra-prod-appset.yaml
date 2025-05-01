@@ -25,13 +25,13 @@ spec:
       #   targetRevision: HEAD
       #   path: '{{.path.path}}'
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        chart: 'apps/{{ index .path.segment 1 }}/chart/{{ index .path.segment 1 }}'
+        chart: 'apps/{{ index .path.segments 1 }}/chart'
         targetRevision: HEAD
         helm:
           valueFiles:
-          - '$values/apps/{{index .path.segment 1}}/chart/values.yaml'
-          - '$values/apps/{{index .path.segment 1}}/base/values-common.yaml'
-          - '$values/apps/{{index .path.segment 1}}/envs/{{index .path.segments 3}}/values-{{index .path.segments 3}}.yaml'
+          - '$values/apps/{{index .path.segments 1}}/chart/values.yaml'
+          - '$values/apps/{{index .path.segments 1}}/base/values-common.yaml'
+          - '$values/apps/{{index .path.segments 1}}/envs/{{index .path.segments 3}}/values-{{index .path.segments 3}}.yaml'
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
         ref: values
