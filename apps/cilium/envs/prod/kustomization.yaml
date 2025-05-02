@@ -6,5 +6,3 @@ resources:
 
 patches:
 - path: sync-waves.yaml
-  target:
-    name: .*
