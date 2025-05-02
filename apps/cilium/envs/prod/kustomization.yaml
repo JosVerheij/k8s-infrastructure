@@ -4,5 +4,7 @@ kind: Kustomization
 resources:
 - cilium.yaml
 
-patchesStrategicMerge:
-- sync-waves.yaml
+patches:
+- path: sync-waves.yaml
+  target:
+    name: *
