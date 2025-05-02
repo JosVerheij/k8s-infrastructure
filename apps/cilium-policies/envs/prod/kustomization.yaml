@@ -3,6 +3,3 @@ kind: Kustomization
 
 resources:
 - host-fw-control-plane.yaml
-
-patchesStrategicMerge:
-- sync-waves.yaml

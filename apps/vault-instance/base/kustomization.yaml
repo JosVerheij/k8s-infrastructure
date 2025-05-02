@@ -4,6 +4,3 @@ kind: Kustomization
 resources:
 - vault-rbac.yaml
 - vault-cr.yaml
-
-patchesStrategicMerge:
-- sync-waves.yaml

@@ -3,6 +3,3 @@ kind: Kustomization
 
 resources:
 - vault-operator.yaml
-
-patchesStrategicMerge:
-- sync-waves.yaml
