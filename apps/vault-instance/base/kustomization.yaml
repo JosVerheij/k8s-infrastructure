@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
 - vault-rbac.yaml
-- vault-cr.yaml
+# - vault-cr.yaml
