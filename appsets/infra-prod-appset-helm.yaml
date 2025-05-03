@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infra-prod-appset
+  name: infra-prod-appset-helm
   namespace: argocd
 spec:
   goTemplate: true
