@@ -12,6 +12,7 @@ spec:
       revision: HEAD
       directories:
       - path: values/*/envs/prod
+  - clusters: {}
   template:      
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}' 
