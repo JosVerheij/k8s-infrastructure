@@ -28,7 +28,7 @@ spec:
       # Destination cluster and namespace to deploy the application
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{if eq (.path.segments 1) "cilium"}}kube-system{{else}}{{index .path.segments 1}}-{{index .path.segments 3}}{{end}}'
+        namespace: '{{if `{{ .path.segments 1 }}` | eq "cilium")}}kube-system{{else}}{{index .path.segments 1}}-{{index .path.segments 3}}{{end}}'
 
       # Sync policy
       syncPolicy:
