@@ -8,5 +8,3 @@ hubble:
   ui:
     enabled: true
 kubeProxyReplacement: true
-# k8sServiceHost: kubernetes.default.svc
-# k8sServicePort: 6443
