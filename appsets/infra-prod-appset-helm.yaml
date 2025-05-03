@@ -7,12 +7,14 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-  - git:
-      repoURL: https://github.com/josverheij/k8s-infrastructure.git
-      revision: HEAD
-      directories:
-      - path: values/*/envs/prod
-  - clusters: {}
+  - matrix:
+      generators:
+      - git:
+          repoURL: https://github.com/josverheij/k8s-infrastructure.git
+          revision: HEAD
+          directories:
+          - path: values/*/envs/prod
+      - clusters: {}
   template:      
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}' 
