@@ -1,2 +1,10 @@
 operator:
   replicas: 1
+hostServices:
+  enabled: false
+externalIPs:
+  enabled: true
+nodePort:
+  enabled: true
+hostPort:
+  enabled: true
