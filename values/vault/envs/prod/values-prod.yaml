@@ -1,4 +1,0 @@
-server:
-  dataStorage:
-    enabled: true
-    storageClass: null
