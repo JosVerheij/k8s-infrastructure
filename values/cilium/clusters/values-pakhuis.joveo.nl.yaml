@@ -20,5 +20,5 @@ cgroup:
   autoMount:
     enabled: true
   hostRoot: /sys/fs/cgroup
-# k8sServiceHost: kubernetes.default.svc
-# k8sServicePort: 6443
+k8sServiceHost: api.pakhuis.joveo.nl
+k8sServicePort: 6443
