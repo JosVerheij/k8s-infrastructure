@@ -16,6 +16,11 @@ securityContext:
     - NET_ADMIN
     - SYS_ADMIN
     - SYS_RESOURCE
+hubble:
+  peerService:
+    clusterDomain: local.pakhuis.joveo.nl
+etcd:
+  clusterDomain: local.pakhuis.joveo.nl
 cgroup:
   autoMount:
     enabled: true
