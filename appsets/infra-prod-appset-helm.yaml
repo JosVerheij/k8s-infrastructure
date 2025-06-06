@@ -47,9 +47,9 @@ spec:
 
       # Sync policy
       syncPolicy:
-        managedNamespaceMetadata:
-          labels:
-            pod-security.kubernetes.io/enforce: privileged
+        # managedNamespaceMetadata:
+        #   labels:
+        #     pod-security.kubernetes.io/enforce: privileged
         syncOptions:
           - CreateNamespace=true  
         automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
