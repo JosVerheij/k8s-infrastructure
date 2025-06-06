@@ -3,4 +3,4 @@
 # labels:
 #   pod-security.kubernetes.io/enforce: privileged
 
-config.disable_mlock: true
+vault.config.disable_mlock: true
