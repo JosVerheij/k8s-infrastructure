@@ -1,0 +1,18 @@
+apiVersion: v2
+appVersion: 1.14.8
+description: A tool for secrets management, encryption as a service, and privileged
+  access management
+home: https://www.vaultproject.io/
+icon: https://raw.githubusercontent.com/hashicorp/vault/f22d202cde2018f9455dec755118a9b84586e082/Vault_PrimaryLogo_Black.png
+keywords:
+- vault
+- hashicorp
+maintainers:
+- email: team@bank-vaults.dev
+  name: Bank Vaults Maintainers
+name: vault
+sources:
+- https://github.com/hashicorp/vault
+- https://github.com/bank-vaults/vault-helm-chart
+type: application
+version: 1.20.6
