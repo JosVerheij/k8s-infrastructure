@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - https://github.com/bank-vaults/vault-operator/deploy/rbac
+  - ./cr-raft.yaml

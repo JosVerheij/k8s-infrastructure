@@ -1,0 +1,14 @@
+---
+apiVersion: "vault.banzaicloud.com/v1alpha1"
+kind: "Vault"
+metadata:
+  name: "vault"
+  labels:
+    app.kubernetes.io/name: vault
+    vault_cr: vault
+spec:
+  unsealConfig.kubernetes.secretNamespace: vault-instance-prod
+  config.api_addr: https://vault.vault-instance-prod:8200
+  # externalConfig.auth.roles.bound_service_account_namespaces: ["vault-instance-prod", "vswh"]
+  # secrets.configuration.config.issuing_certificates and crl_distribution_points:
+  # secrets.configuration.root/generate.common_name:

@@ -3,4 +3,6 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - https://raw.githubusercontent.com/bank-vaults/vault-operator/v1.21.0/deploy/examples/cr-raft.yaml
+
+patches:
+  - ./cr-raft.yaml
