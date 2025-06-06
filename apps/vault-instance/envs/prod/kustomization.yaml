@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - ../../base
 
-patches:
-  - path: ./cr-raft.yaml
+# patches:
+#   - path: ./cr-raft.yaml
