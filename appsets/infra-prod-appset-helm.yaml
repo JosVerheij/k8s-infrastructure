@@ -30,8 +30,9 @@ spec:
         helm:
           valueFiles:
           - '$values/charts/{{index .path.segments 1}}/values.yaml'
-          - '$values/values/{{index .path.segments 1}}/base/values-common.yaml'
-          - '$values/{{.path.path}}/values-{{index .path.segments 3}}.yaml'
+          - '$values/values/{{index .path.segments 1}}/base/values.yaml'
+          - '$values/values/{{index .path.segments 1}}/prod/values.yaml'
+          # - '$values/{{.path.path}}/values-{{index .path.segments 3}}.yaml'
           - '$values/values/{{index .path.segments 1}}/clusters/values-{{.name}}.yaml'
           ignoreMissingValueFiles: true
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
