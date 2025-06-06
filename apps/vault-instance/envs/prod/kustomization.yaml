@@ -5,4 +5,4 @@ resources:
   - ../../base
 
 patches:
-  - ./cr-raft.yaml
+  - path: ./cr-raft.yaml
