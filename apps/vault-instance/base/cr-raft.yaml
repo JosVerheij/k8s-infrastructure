@@ -8,6 +8,7 @@ metadata:
   labels:
     app.kubernetes.io/name: vault
     vault_cr: vault
+  namespace: default
 spec:
   size: 3
   image: hashicorp/vault:1.14.8
