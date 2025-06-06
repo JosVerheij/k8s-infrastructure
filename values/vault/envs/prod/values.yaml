@@ -1,4 +1,6 @@
 # values/vault/envs/prod/values.yaml
 
-labels:
-  pod-security.kubernetes.io/enforce: privileged
+# labels:
+#   pod-security.kubernetes.io/enforce: privileged
+
+config.disable_mlock: true
