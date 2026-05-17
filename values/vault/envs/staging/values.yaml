@@ -1,6 +1,6 @@
 # Vault Helm chart Value Overrides
 global:
-  enabled: true
+  enabled: false
   tlsDisable: false
   resources:
     requests:
