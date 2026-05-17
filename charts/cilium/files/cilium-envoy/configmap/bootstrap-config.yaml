@@ -54,7 +54,7 @@ staticResources:
             - addressPrefix: "::1"
               prefixLen: 128
             {{- end }}
-          streamIdleTimeout: "0s"
+          streamIdleTimeout: "{{ .Values.envoy.streamIdleTimeoutDurationSeconds }}s"
   {{- end }}
   {{- if and .Values.envoy.debug.admin.enabled }}
   - name: "envoy-admin-listener"
@@ -107,7 +107,7 @@ staticResources:
             - addressPrefix: "::1"
               prefixLen: 128
             {{- end }}
-          streamIdleTimeout: "0s"
+          streamIdleTimeout: "{{ .Values.envoy.streamIdleTimeoutDurationSeconds }}s"
   {{- end }}
   - name: "envoy-health-listener"
     address:
@@ -159,7 +159,7 @@ staticResources:
             - addressPrefix: "::1"
               prefixLen: 128
             {{- end }}
-          streamIdleTimeout: "0s"
+          streamIdleTimeout: "{{ .Values.envoy.streamIdleTimeoutDurationSeconds }}s"
   clusters:
   - name: "ingress-cluster"
     type: "ORIGINAL_DST"
@@ -167,6 +167,8 @@ staticResources:
     circuitBreakers:
       thresholds:
       - maxRetries: {{ .Values.envoy.maxConcurrentRetries }}
+        maxConnections: {{ .Values.envoy.clusterMaxConnections }}
+        maxRequests: {{ .Values.envoy.clusterMaxRequests }}
     lbPolicy: "CLUSTER_PROVIDED"
     typedExtensionProtocolOptions:
       envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
@@ -183,6 +185,8 @@ staticResources:
     circuitBreakers:
       thresholds:
       - maxRetries: {{ .Values.envoy.maxConcurrentRetries }}
+        maxConnections: {{ .Values.envoy.clusterMaxConnections }}
+        maxRequests: {{ .Values.envoy.clusterMaxRequests }}
     lbPolicy: "CLUSTER_PROVIDED"
     typedExtensionProtocolOptions:
       envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
@@ -204,6 +208,8 @@ staticResources:
     circuitBreakers:
       thresholds:
       - maxRetries: {{ .Values.envoy.maxConcurrentRetries }}
+        maxConnections: {{ .Values.envoy.clusterMaxConnections }}
+        maxRequests: {{ .Values.envoy.clusterMaxRequests }}
     lbPolicy: "CLUSTER_PROVIDED"
     typedExtensionProtocolOptions:
       envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
@@ -220,6 +226,8 @@ staticResources:
     circuitBreakers:
       thresholds:
       - maxRetries: {{ .Values.envoy.maxConcurrentRetries }}
+        maxConnections: {{ .Values.envoy.clusterMaxConnections }}
+        maxRequests: {{ .Values.envoy.clusterMaxRequests }}
     lbPolicy: "CLUSTER_PROVIDED"
     typedExtensionProtocolOptions:
       envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
@@ -292,7 +300,7 @@ overloadManager:
   - name: "envoy.resource_monitors.global_downstream_max_connections"
     typedConfig:
       "@type": "type.googleapis.com/envoy.extensions.resource_monitors.downstream_connections.v3.DownstreamConnectionsConfig"
-      max_active_downstream_connections: "50000"
+      max_active_downstream_connections: "{{ .Values.envoy.maxGlobalDownstreamConnections }}"
 applicationLogConfig:
   logFormat:
     {{- if .Values.envoy.log.format_json }}
@@ -304,3 +312,4 @@ admin:
   address:
     pipe:
       path: "/var/run/cilium/envoy/sockets/admin.sock"
+      mode: 0660
