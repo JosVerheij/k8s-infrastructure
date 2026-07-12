@@ -42,7 +42,7 @@ spec:
       # Destination cluster and namespace to deploy the application
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{if eq (index .path.segments 1) "cilium" "sealed-secrets"}}kube-system{{else}}{{index .path.segments 1}}-{{index .path.segments 3}}{{end}}'
+        namespace: '{{if eq (index .path.segments 1) "cilium" "sealed-secrets"}}kube-system{{else}}{{index .path.segments 3}}-{{index .path.segments 1}}{{end}}'
         # namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
 
       # Sync policy

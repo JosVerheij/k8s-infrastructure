@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infra-qa-appset
+  name: infra-testing-appset
   namespace: argocd
 spec:
   goTemplate: true
@@ -11,7 +11,7 @@ spec:
       repoURL: https://github.com/josverheij/k8s-infrastructure.git
       revision: HEAD
       directories:
-      - path: apps/*/envs/qa
+      - path: apps/*/envs/testing
   template:
     metadata:
       name: '{{index .path.segments 1}}-{{index .path.segments 3}}'
@@ -28,7 +28,7 @@ spec:
       # Destination cluster and namespace to deploy the application
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{index .path.segments 1}}-{{index .path.segments 3}}'
+        namespace: '{{index .path.segments 3}}-{{index .path.segments 1}}'
 
       # Sync policy
       syncPolicy:
