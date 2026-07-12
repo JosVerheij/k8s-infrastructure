@@ -1,0 +1,5 @@
+config:
+  path: .
+  # targetRevision: 1.19.5
+  targetRevision: sha256:20fbbc14ac20b55a292c0dcda5571bf31cde30a7dbc68c29db3e709390ab0732  # DOES NOT YET WORK: see https://github.com/argoproj/argo-cd/issues/25078
+  repoURL: oci://quay.io/cilium/charts/cilium

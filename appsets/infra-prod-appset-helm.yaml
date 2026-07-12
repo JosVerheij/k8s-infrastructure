@@ -13,7 +13,7 @@ spec:
           repoURL: https://github.com/josverheij/k8s-infrastructure.git
           revision: HEAD
           directories:
-          - path: values/*/envs/prod
+          - files: helm/*/envs/prod/config.yaml"
       - clusters: {}
   template:      
     metadata:
@@ -26,24 +26,25 @@ spec:
       sources:
       - repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
-        path: 'charts/{{index .path.segments 1}}'
+        ref: values
+      - path: '{{.config}}{{dig "path" "." .}}'
+        chart: '{{.config}}{{dig "chart" "" .}}'
+        repoURL: '{{ .config.repoURL }}'
+        targetRevision: '{{ .config.targetRevision }}'
         helm:
           valueFiles:
-          - '$values/charts/{{index .path.segments 1}}/values.yaml'
-          - '$values/values/{{index .path.segments 1}}/base/values.yaml'
-          - '$values/values/{{index .path.segments 1}}/envs/{{index .path.segments 3}}/values.yaml'
+          - '$values/helm/{{index .path.segments 1}}/base/values.yaml'
+          - '$values/helm/{{index .path.segments 1}}/envs/{{index .path.segments 3}}/values.yaml'
           # - '$values/{{.path.path}}/values-{{index .path.segments 3}}.yaml'
-          - '$values/values/{{index .path.segments 1}}/clusters/values-{{.name}}.yaml'
+          - '$values/helm/{{index .path.segments 1}}/clusters/values-{{.name}}.yaml'  # TBD
           ignoreMissingValueFiles: true
-      - repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        targetRevision: HEAD
-        ref: values
+
 
       # Destination cluster and namespace to deploy the application
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{if eq (index .path.segments 1) "cilium" "sealed-secrets"}}kube-system{{else}}{{index .path.segments 3}}-{{index .path.segments 1}}{{end}}'
-        # namespace: '{{index .path.segments 3}}-{{index .path.segments 1}}'
+        # namespace: '{{if eq (index .path.segments 1) "cilium" "sealed-secrets"}}kube-system{{else}}{{index .path.segments 3}}-{{index .path.segments 1}}{{end}}'
+        namespace: '{{index .path.segments 3}}-{{index .path.segments 1}}'
 
       # Sync policy
       syncPolicy:
