@@ -3,9 +3,20 @@ kind: Kustomization
 
 namespace: argocd
 
+resources:
+  - base/namespaces.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/6eaf7d1f64b6b7e165e6e8ed74aa25259b75e978/manifests/install.yaml
+
+patches:
+  - path: patches/security-context.yaml
+    target:
+      kind: Deployment
+      name: "(argocd-server|argocd-repo-server|argocd-applicationset-controller|argocd-notifications-controller)"
+  - path: patches/security-context.yaml
+    target:
+      kind: StatefulSet
+      name: argocd-application-controller
+
 images:
   - name: quay.io/argoproj/argocd
     digest: sha256:97c99bcbae3bcdd38d47d41e468a95a7735b23bdd2508c24f7bbf6e9a6ca8bee
-
-resources:
-- https://raw.githubusercontent.com/argoproj/argo-cd/6eaf7d1f64b6b7e165e6e8ed74aa25259b75e978/manifests/install.yaml
