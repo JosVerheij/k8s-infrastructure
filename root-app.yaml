@@ -1,20 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: all-infrastructure
+  name: root-appset
   namespace: argocd
+  finalizers:
+    # Ensures cascading deletion of all child AppSets and generated Apps
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/josverheij/k8s-infrastructure.git
-    targetRevision: master
+    targetRevision: HEAD
     path: appsets
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
-    syncOptions:
-    - CreateNamespace=true  
-    automated: 
-      prune: true 
+    automated:
+      prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

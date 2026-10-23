@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-charts
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: https://github.com/josverheij/k8s-infrastructure.git
+        revision: HEAD
+        files:
+          - path: "infrastructure/charts/*/app.yaml"
+  template:
+    metadata:
+      name: 'infra-{{ .name }}'
+    spec:
+      project: default
+      sources:
+        # Native OCI Artifact
+        - repoURL: '{{ .source.repoURL }}'
+          targetRevision: '{{ .source.targetRevision }}'
+          path: '{{ .source.path }}'
+          helm:
+            valueFiles:
+              - '$git-values/{{ .path.path }}/values.yaml'
+        # Local Git repo supplying values
+        - repoURL: https://github.com/josverheij/k8s-infrastructure.git
+          targetRevision: HEAD
+          ref: git-values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ .namespace }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
