@@ -20,14 +20,12 @@ spec:
     spec:
       project: default
       sources:
-        # Native OCI Artifact
         - repoURL: '{{ .source.repoURL }}'
           targetRevision: '{{ .source.targetRevision }}'
           path: '{{ .source.path }}'
           helm:
             valueFiles:
               - '$git-values/{{ .path.path }}/values.yaml'
-        # Local Git repo supplying values
         - repoURL: https://github.com/josverheij/k8s-infrastructure.git
           targetRevision: HEAD
           ref: git-values
