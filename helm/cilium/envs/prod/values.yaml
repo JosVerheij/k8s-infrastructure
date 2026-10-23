@@ -1,4 +1,0 @@
-# values/cilium/prod/values.yaml
-operator:
-  replicas: 1
-k8sServicePort: 6443
