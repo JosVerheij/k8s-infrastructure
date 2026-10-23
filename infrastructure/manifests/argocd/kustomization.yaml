@@ -11,11 +11,6 @@ resources:
 #   - path: overlays/security-context.yaml
 #     target:
 #       kind: Deployment
-#       name: "(argocd-server|argocd-repo-server|argocd-applicationset-controller|argocd-notifications-controller)"
-#   - path: overlays/security-context.yaml
-#     target:
-#       kind: StatefulSet
-#       name: argocd-application-controller
 
 images:
   - name: quay.io/argoproj/argocd
