@@ -1,11 +1,6 @@
 
 kubeProxyReplacement: true
 
-cgroup:
-  autoMount:
-    enabled: false
-  hostRoot: /sys/fs/cgroup
-
 gatewayApi:
   enabled: true
   enableAlpn: true
