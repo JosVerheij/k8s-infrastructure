@@ -9,11 +9,14 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-    - git:
-        repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        revision: HEAD
-        directories:
-          - path: "infrastructure/manifests/*"
+    - matrix:
+        generators:
+          - clusters: {}
+          - git:
+              repoURL: https://github.com/josverheij/k8s-infrastructure.git
+              revision: HEAD
+              directories:
+                - path: "infrastructure/manifests/*"
   template:
     metadata:
       name: 'infra-{{ .path.basename }}'
