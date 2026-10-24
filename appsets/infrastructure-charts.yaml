@@ -19,7 +19,7 @@ spec:
               - path: "infrastructure/charts/*/app.yaml"
   template:
     metadata:
-      name: 'infra-{{ .name }}'
+      name: 'infra-{{ .chart.name }}'
     spec:
       project: default
       sources:
