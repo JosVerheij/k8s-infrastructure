@@ -4,8 +4,3 @@ k8sServicePort: 7445
 ipam:
   mode: kubernetes
 
-
-cgroup:
-  autoMount:
-    enabled: false
-  hostRoot: /sys/fs/cgroup
