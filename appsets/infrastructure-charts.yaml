@@ -19,7 +19,7 @@ spec:
         - clusters: {}
   template:
     metadata:
-      name: 'infra-{{ .chart.name }}'
+      name: 'infra-{{ .path.basename }}'
     spec:
       project: default
       sources:
