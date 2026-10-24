@@ -9,11 +9,14 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-    - git:
-        repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        revision: HEAD
-        files:
-          - path: "infrastructure/charts/*/app.yaml"
+    - matrix:
+        generators:
+        - git:
+            repoURL: https://github.com/josverheij/k8s-infrastructure.git
+            revision: HEAD
+            files:
+              - path: "infrastructure/charts/*/app.yaml"
+        - clusters: {}
   template:
     metadata:
       name: 'infra-{{ .name }}'
@@ -24,13 +27,15 @@ spec:
           targetRevision: '{{ .source.targetRevision }}'
           path: '{{ .source.path }}'
           helm:
+            ignoreMissingValueFiles: true
             valueFiles:
               - '$git-values/{{ .path.path }}/values.yaml'
+              - '$git-values/{{ .path.path }}/values-{{ .name }}.yaml'
         - repoURL: https://github.com/josverheij/k8s-infrastructure.git
           targetRevision: HEAD
           ref: git-values
       destination:
-        server: https://kubernetes.default.svc
+        server: '{{ .server }}'
         namespace: '{{ .namespace }}'
       syncPolicy:
         automated:
