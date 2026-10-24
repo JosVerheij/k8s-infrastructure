@@ -11,12 +11,12 @@ spec:
   generators:
     - matrix:
         generators:
-        - clusters: {}
         - git:
             repoURL: https://github.com/josverheij/k8s-infrastructure.git
             revision: HEAD
             files:
               - path: "infrastructure/charts/*/app.yaml"
+        - clusters: {}
   template:
     metadata:
       name: 'infra-{{ .chart.name }}'
