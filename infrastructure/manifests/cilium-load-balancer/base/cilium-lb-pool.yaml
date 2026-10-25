@@ -3,5 +3,5 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: "default-lan-pool"
 spec:
-  blocks:
+  blocks: {}
 
