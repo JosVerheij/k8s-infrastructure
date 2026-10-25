@@ -1,0 +1,6 @@
+config:
+  name: cert-manager
+  source:
+    repoURL: oci://quay.io/jetstack/charts/cert-manager
+    targetRevision: sha256:9ec67938b2981d8b333af61b3fcf53e26b4f6f5deb7ccda3de4ea116bb373a17
+    path: .
