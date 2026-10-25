@@ -16,6 +16,8 @@ spec:
               revision: HEAD
               files:
                 - path: "infrastructure/manifests/*/kustomization.yaml"
+                - path: "infrastructure/manifests/**/clusters/**"
+                  exclude: true
           - clusters: {}
   template:
     metadata:
