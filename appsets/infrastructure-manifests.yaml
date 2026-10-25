@@ -11,11 +11,11 @@ spec:
   generators:
     - matrix:
         generators:
-    - git:
-        repoURL: https://github.com/josverheij/k8s-infrastructure.git
-        revision: HEAD
-        files:
-          - path: "infrastructure/manifests/*/kustomization.yaml"
+          - git:
+              repoURL: https://github.com/josverheij/k8s-infrastructure.git
+              revision: HEAD
+              files:
+                - path: "infrastructure/manifests/*/kustomization.yaml"
           - clusters: {}
   template:
     metadata:
