@@ -1,4 +1,4 @@
-app:
+config:
   name: cilium
   namespace: kube-system
   source:

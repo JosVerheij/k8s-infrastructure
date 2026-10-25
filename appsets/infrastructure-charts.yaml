@@ -23,9 +23,9 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: '{{ .app.source.repoURL }}'
-          targetRevision: '{{ .app.source.targetRevision }}'
-          path: '{{ .app.source.path }}'
+        - repoURL: '{{ .config.source.repoURL }}'
+          targetRevision: '{{ .config.source.targetRevision }}'
+          path: '{{ .config.source.path }}'
           helm:
             ignoreMissingValueFiles: true
             valueFiles:
@@ -36,7 +36,7 @@ spec:
           ref: git-values
       destination:
         server: '{{ .server }}'
-        namespace: '{{ dig "app" "namespace" "" . | default .path.basename }}'
+        namespace: '{{ dig "config" "namespace" "" . | default .path.basename }}'
       syncPolicy:
         automated:
           prune: true
