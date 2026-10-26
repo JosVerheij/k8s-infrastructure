@@ -45,6 +45,8 @@ Temporary Items
 
 *.secret.yaml
 *.secret.json
+*.sops.yaml
+*.sops.json
 .env
 
 # Decrypted output
