@@ -7,6 +7,10 @@
 global:
   priorityClassName: system-cluster-critical
 
+config:
+  gatewayAPI:
+    enabled: true
+
 replicaCount: 2
 podDisruptionBudget:
   enabled: true
