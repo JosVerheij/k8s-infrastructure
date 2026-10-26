@@ -5,6 +5,7 @@ namespace: cert-manager
 
 resources:
   - base/namespaces.yaml
+  - base/letsencrypt-staging-issuer.yaml
 
 generators:
   - base/secret-generator.yaml
