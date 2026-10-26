@@ -10,9 +10,9 @@ spec:
       volumes:
         - name: custom-tools
           emptyDir: {}
-        - name: sops-age
-          secret:
-            secretName: sops-age
+        # - name: sops-age
+        #   secret:
+        #     secretName: sops-age
       # 2. Use an init container to copy custom binaries into the emptyDir
       initContainers:
         - name: install-ksops
@@ -41,14 +41,19 @@ spec:
             - mountPath: /usr/local/bin/ksops
               name: custom-tools
               subPath: ksops
-            - mountPath: /.config/sops/age
-              name: sops-age
+            # - mountPath: /.config/sops/age
+            #   name: sops-age
           ## If you use AWS or GCP KMS, don't forget to include the necessary credentials to decrypt the secrets!
           env:
-            - name: XDG_CONFIG_HOME
-              value: /.config
-            - name: SOPS_AGE_KEY_FILE
-              value: /.config/sops/age/keys.txt
+            - name: SOPS_AGE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: sops-age
+                  key: keys.txt
+            # - name: XDG_CONFIG_HOME
+            #   value: /.config
+            # - name: SOPS_AGE_KEY_FILE
+            #   value: /.config/sops/age/keys.txt
         #  - name: AWS_ACCESS_KEY_ID
         #    valueFrom:
         #      secretKeyRef:
