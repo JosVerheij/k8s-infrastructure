@@ -16,6 +16,16 @@ spec:
       initContainers:
         - name: install-ksops
           image: viaductoss/ksops@sha256:4def9fdd4e2f850265740ebe9592c5455d19b76891e88e602df8b52d74b95334
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 999
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           command: ["/usr/local/bin/ksops", "install", "--with-kustomize", "/custom-tools"]
           volumeMounts:
             - mountPath: /custom-tools
