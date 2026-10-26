@@ -12,6 +12,7 @@ spec:
           emptyDir: {}
         - name: sops-age
           secret:
+            secretName: sops-age
       # 2. Use an init container to copy custom binaries into the emptyDir
       initContainers:
         - name: install-ksops
