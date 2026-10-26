@@ -7,10 +7,8 @@ resources:
   - base/namespaces.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/6eaf7d1f64b6b7e165e6e8ed74aa25259b75e978/manifests/install.yaml
 
-# patches:
-#   - path: overlays/security-context.yaml
-#     target:
-#       kind: Deployment
+patches:
+  - path: overlays/repo-server-ksops-patch.yaml
 
 images:
   - name: quay.io/argoproj/argocd
