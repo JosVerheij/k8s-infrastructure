@@ -1,0 +1,33 @@
+# creation rules are evaluated sequentially, the first match wins
+creation_rules:
+  # - path_regex: \.yaml$
+  - unencrypted_regex: "^(apiVersion|metadata|kind|type)$"
+    age: >-
+      age1pq1kncqpte89yg7gzfscdtymtynangz45u4erxx4rgmdwsyz6vu7xfphxtspfq35c6n
+      c5mf6v6nq9ph96am2ugj3w0hcymuq6jp2zpzcadshl7xkckukq9nfkz9s6vprhl92tfuwxv
+      cp2nhefjslzrkpzpvqu8ezrtfkc4fney8r75h45tjk598qn6cwyma2dq8wzfs0fft2muvqg
+      cjgucfaqtadgyptj0p4zrjz2km9jdy674573j85rmqrvs34qxqc645vjc495d4e65e5d7v9
+      f4dwvmfjqd78ksmcd6vz35mk9pccfz5fep7xxs8akqz08xtjev5h2uchtyxykmk7wkvzu4f
+      9jgg6z7n8698zk4s9az3fgx7gaw6s5dljjuvms9u4urt2ge6nx8frj5l7k4tqz6ur9h9nfu
+      vpv77skpe49vym2tsp40cwwysjwuucfyht4rxd6fk7wv6853rcu56jwah4jf3yh58z9hje4
+      zednpufyyx2uj2nqujaajcglp8tsk6lz4spwc60n5q674mzufuyqtzpx5y34ed2wapjkyv4
+      tluyhag4gpz24k84u6m9hlgsfz2zp6xtqcp4qqr675kv96szagrgrfd0xqpxqvk5u3nkfgc
+      wc5njfxal3sqkvm8csxtq8nzq66wkzrxw46vjur65q9uy4d3r9p3248qndp74trjt29jqle
+      2jzpcfjnpgkkxf3evxwkzpzynvd93fz0z2xk60v6mtjf64vs5vyldvg845cr7c42zmg3vm5
+      eztz0lqn2csuwd8vmahhg9p5wrnjpdj0n7z24khwvprqqengctzh69cujctj2nld3tclvgt
+      y7rz6cq8g6nx6yqfk3kk0d8qgwk4040kmfjc5c9fqky7zacw4h2yrt8qe0lgs45lx9jtuuu
+      9u2hf9uw0ds25nqwpex0v37906wnex6px5sckyynsxpwcnztq5qgrfmceqw7yj9rwjz3vha
+      s4kqxfes4k54snp3vmpuq0hcxgnhvcrte0z5uqfsyrsstp8deyw2tj9nu889h4z6rweg28q
+      vegu68xms3ggzm6xrcyp2r8qppt7vzeq7r2pefd3s7yeg9dajr6n7uh9mkx3aghq840pt6g
+      t2m42gp0l9tx3jtjcmfs3upfyv4h42u2y9mcsdx6vae9v7ymxeegw89da0ygwzn9y6gveay
+      dwysw8dsx6l529qst9ekmw4uejfgj02nfnvpwj8k9vf29ceqp47f780m8y664d4eunqykqr
+      czadzf9gph7k7xgmq6dkjugkfau2xseayr4auq3zv7v8n6pfs39wgj6l5hx2vjsqh7pgsg6
+      3pr2mfp3kqyt5aynqnvasdyg7pjq6u534t32md3vplsc7er256c398f5f3n7lev39e8fz7u
+      9fjqv724jyf48zmhr6mxe7v5v7ynenexaz53666cyjhz3v6nq3vu8nttyah3czrwkpjuaqg
+      m7y6wajpt0epcrfkhvpf0xuru2rfd44sl2f38ac4djff5z4eu43lkt4p97as4563xxk0fg5
+      p5x36m7cnqjvgnpumjk4drztdhvgd2pjtm2jhsxnfq5q83dr09920x5nx0x6z8jfn8dm5cq
+      edjzz08j4ugnkg2t0q3vcn74jnuguv57ap0pvksem9dgedn30tqdn2736p38rqvufghjdlv
+      37gz59twuetc5ch2wsd2su8gayvc2apqcaj2lpsstf9ktd7uuv2as454un2w6x54ufas7fh
+      52nr2qgemgax7m5j5muc38knw7k7mecy3m4vyv9s56qp4qjg009fs53qp0g4m8g4wqun25g
+      fe9zt4zud8zne6zan4nvj98kjak0c57alw49pfdzz2d78yhyyumryaz05dzk6agafv2dy98
+      2vp3lh24ve8f08cwg27j7r3lxd45dagthyzc3jnq8n

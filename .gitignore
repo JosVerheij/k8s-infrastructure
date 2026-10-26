@@ -39,3 +39,14 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,helm
+
+# Local plaintext secrets
+**/secrets/
+
+*.secret.yaml
+*.secret.json
+.env
+
+# Decrypted output
+*.dec.yaml
+*.dec.json
