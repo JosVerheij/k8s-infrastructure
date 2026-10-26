@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-manifests
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/josverheij/k8s-infrastructure.git
+              revision: HEAD
+              files:
+                - path: "infrastructure/manifests/*/kustomization.yaml"
+                - path: "infrastructure/manifests/**/clusters/**"
+                  exclude: true
+          - clusters: {}
+  template:
+    metadata:
+      name: 'infra-{{ .path.basename }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/josverheij/k8s-infrastructure.git
+        targetRevision: HEAD
+        path: '{{ .path.path }}'
+        kustomize:
+          ignoreMissingComponents: true
+          components:
+            - clusters/{{ .name }}
+      destination:
+        server: '{{ .server }}'
+        namespace: '{{ if hasKey . "namespace" }}{{ .namespace }}{{ else }}{{ .path.basename }}{{ end }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        managedNamespaceMetadata:
+          labels:
+            pod-security.kubernetes.io/enforce: restricted
+            pod-security.kubernetes.io/enforce-version: latest
+            pod-security.kubernetes.io/warn: restricted
+            pod-security.kubernetes.io/warn-version: latest
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
