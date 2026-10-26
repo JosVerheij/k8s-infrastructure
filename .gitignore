@@ -40,13 +40,6 @@ Temporary Items
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,helm
 
-# Local plaintext secrets
-**/secrets/
-
-*.secret.yaml
-*.secret.json
-*.sops.yaml
-*.sops.json
 .env
 
 # Decrypted output
