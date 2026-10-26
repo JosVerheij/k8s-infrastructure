@@ -9,6 +9,7 @@ resources:
 
 patches:
   - path: overlays/repo-server-ksops-patch.yaml
+  - path: overlays/argocd-cm-ksops-patch.yaml
 
 images:
   - name: quay.io/argoproj/argocd
