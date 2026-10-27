@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infra-manifests
+  name: app-manifests
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -15,13 +15,13 @@ spec:
               repoURL: https://github.com/josverheij/k8s-infrastructure.git
               revision: HEAD
               files:
-                - path: "infrastructure/manifests/*/kustomization.yaml"
-                - path: "infrastructure/manifests/**/clusters/**"
+                - path: "workloads/manifests/*/kustomization.yaml"
+                - path: "workloads/manifests/**/clusters/**"
                   exclude: true
           - clusters: {}
   template:
     metadata:
-      name: 'infra-{{ .path.basename }}'
+      name: 'app-{{ .path.basename }}'
     spec:
       project: default
       source:
