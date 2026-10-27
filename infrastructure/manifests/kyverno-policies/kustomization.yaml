@@ -2,5 +2,23 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - base/policy-require-run-as-nonroot.yaml
+  # Pod Security Standards (Restricted)
+  - base/policies/require-run-as-nonroot.yaml
+  - base/policies/require-run-as-non-root-user.yaml
+  - base/policies/restrict-seccomp-strict.yaml
+  - base/policies/disallow-capabilities-strict.yaml
+  - base/policies/disallow-privilege-escalation.yaml
+  - base/policies/restrict-volume-types.yaml
+  # Pod Security Standards (Baseline)
+  - base/policies/restrict-sysctls.yaml
+  - base/policies/disallow-selinux.yaml
+  - base/policies/disallow-proc-mount.yaml
+  - base/policies/disallow-host-ports.yaml
+  - base/policies/disallow-privileged-containers.yaml
+  - base/policies/disallow-host-path.yaml
+  - base/policies/disallow-host-namespaces.yaml
+
+  # other
+  - base/policies/restrict-sa-automount-sa-token.yaml
+
 
