@@ -1,3 +1,5 @@
+replicaCount: 1
+
 networkPolicy:
   egress:
   - ports:
