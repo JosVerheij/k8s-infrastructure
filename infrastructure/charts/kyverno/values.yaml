@@ -1,0 +1,9 @@
+config:
+  preserve: false
+
+networkPolicy:
+  enabled: true
+  ingressFrom: []
+
+webhookLabels:
+  app.kubernetes.io/managed-by: argocd

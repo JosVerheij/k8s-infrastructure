@@ -2,7 +2,7 @@ config:
   name: kyverno
   namespace: kyverno
   source:
-    repoURL: oci://ghcr.io/kyverno/kyverno
+    repoURL: oci://ghcr.io/kyverno/charts/kyverno
     targetRevision: sha256:83054f30148c3cfc001087c1f5772eda7c7224e9b74b7f0e70c39c9cafe009d1
     path: .
   syncPolicy:
