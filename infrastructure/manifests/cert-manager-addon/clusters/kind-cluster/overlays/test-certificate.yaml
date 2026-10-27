@@ -1,0 +1,13 @@
+# test-certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: test-staging-cert
+  namespace: cert-manager
+spec:
+  secretName: test-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  dnsNames:
+    - test.joveo.nl  # Replace with your actual domain
