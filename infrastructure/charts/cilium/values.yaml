@@ -1,6 +1,9 @@
 
 kubeProxyReplacement: true
 
+l2announcements:
+  enabled: true
+
 gatewayApi:
   enabled: true
   enableAlpn: true
