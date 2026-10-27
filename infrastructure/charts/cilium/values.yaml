@@ -18,8 +18,8 @@ securityContext:
       - NET_RAW
       - IPC_LOCK
       - SYS_ADMIN
-      - SYS_RESOURCEa
-      - DAC_OVERRIDE,
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
       - FOWNER
       - SETGID
       - SETUID
