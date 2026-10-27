@@ -4,7 +4,7 @@ kubeProxyReplacement: true
 l2announcements:
   enabled: true
 
-gatewayApi:
+gatewayAPI:
   enabled: true
   enableAlpn: true
   enableAppProtocol: true
@@ -18,7 +18,7 @@ securityContext:
       - NET_RAW
       - IPC_LOCK
       - SYS_ADMIN
-      - SYS_RESOURCE
+      - SYS_RESOURCEa
       - DAC_OVERRIDE,
       - FOWNER
       - SETGID
