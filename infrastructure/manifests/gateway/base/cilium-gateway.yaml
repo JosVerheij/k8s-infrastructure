@@ -4,7 +4,7 @@ metadata:
   name: external-gateway
   namespace: gateway
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   gatewayClassName: cilium
   listeners:
