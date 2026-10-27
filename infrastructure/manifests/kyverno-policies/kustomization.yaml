@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-  - base/namespaces.yaml
-  - base/serviceaccount.yaml
+# resources:
+#   - base/namespaces.yaml
+#   - base/serviceaccount.yaml
 
-  - https://github.com/kyverno/policies/blob/6ab6c812873f5d46318867baf1ae528779671132/other-mpol/apply-pss-restricted-profile/apply-pss-restricted-profile.yaml
+#   - https://github.com/kyverno/policies/blob/6ab6c812873f5d46318867baf1ae528779671132/other-mpol/apply-pss-restricted-profile/apply-pss-restricted-profile.yaml
 
