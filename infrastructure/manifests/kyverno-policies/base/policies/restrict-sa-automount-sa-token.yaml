@@ -13,6 +13,7 @@ metadata:
 spec:
   validationActions:
     - Audit
+    - Warn
   evaluation:
     background:
       enabled: true
