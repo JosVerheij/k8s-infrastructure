@@ -3,3 +3,4 @@ config:
   source:
     repoURL: oci://ghcr.io/piraeusdatastore/piraeus-operator/piraeus
     targetRevision: sha256:420dc18bd57faed1f10ac2ec5f1fb88399b8b4753e4ff0f3cb157090276a4e4c
+    path: .
