@@ -25,7 +25,7 @@ spec:
       sources:
         - repoURL: '{{ .config.source.repoURL }}'
           targetRevision: '{{ .config.source.targetRevision }}'
-          path: '{{ .config.source.path }}'
+          # path: '{{ .config.source.path }}'
           helm:
             ignoreMissingValueFiles: true
             valueFiles:
@@ -45,3 +45,4 @@ spec:
           - CreateNamespace=true
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
+          - Prune=confirm
