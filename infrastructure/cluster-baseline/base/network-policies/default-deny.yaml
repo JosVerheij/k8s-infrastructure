@@ -5,6 +5,8 @@ metadata:
   name: "default-deny"
 spec:
   description: "Block all the traffic (except DNS) by default"
+  ingress:
+  - {}
   egress:
   - toEndpoints:
     - matchLabels:
