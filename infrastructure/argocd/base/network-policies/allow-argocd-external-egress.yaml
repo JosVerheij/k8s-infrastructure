@@ -1,0 +1,20 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-argocd-external-egress"
+spec:
+  description: "Allow traffic to selected repository domains"
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+  egress:
+  - toPorts:
+    - ports:
+      - port: "443"
+        protocol: TCP
+    toFQDNs:
+    - matchPattern: "*.ghcr.io"
+    - matchPattern: "*.github.com"
+    - matchPattern: "*.quay.io"
+

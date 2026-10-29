@@ -1,2 +1,3 @@
 resources:
-- allow-argocd-application-controller-egress.yaml
+- allow-argocd-internal-egress.yaml
+- allow-argocd-external-egress.yaml
