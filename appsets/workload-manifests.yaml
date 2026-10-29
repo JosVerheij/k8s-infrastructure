@@ -15,8 +15,10 @@ spec:
               repoURL: https://github.com/josverheij/k8s-infrastructure.git
               revision: HEAD
               files:
-                - path: "workloads/manifests/*/kustomization.yaml"
-                - path: "workloads/manifests/**/clusters/**"
+                - path: "workloads/*/kustomization.yaml"
+                - path: "workloads/*/*/**/kustomization.yaml"
+                  exclude: true
+                - path: "workloads/*/*/kustomization.yaml"
                   exclude: true
           - clusters: {}
   template:

@@ -16,6 +16,10 @@ spec:
             revision: HEAD
             files:
               - path: "infrastructure/*/helm.yaml"
+              - path: "infrastructure/*/*/**/helm.yaml"
+                exclude: true
+              - path: "infrastructure/*/*/helm.yaml"
+                exclude: true
         - clusters: {}
   template:
     metadata:
