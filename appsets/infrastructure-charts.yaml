@@ -23,8 +23,8 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: '{{ source.repoURL }}'
-          targetRevision: '{{ source.targetRevision }}'
+        - repoURL: '{{ .source.repoURL }}'
+          targetRevision: '{{ .source.targetRevision }}'
           path: '{{ dig "source" "path" "" . | default "." }}'
           helm:
             ignoreMissingValueFiles: true
