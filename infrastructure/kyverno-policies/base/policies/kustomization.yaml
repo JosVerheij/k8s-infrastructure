@@ -15,6 +15,6 @@ resources:
   - disallow-host-path.yaml
   - disallow-host-namespaces.yaml
   # other
-  - base/policies/restrict-sa-automount-sa-token.yaml
+  - restrict-sa-automount-sa-token.yaml
 
 
