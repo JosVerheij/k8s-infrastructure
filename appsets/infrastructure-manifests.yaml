@@ -16,8 +16,11 @@ spec:
               revision: HEAD
               files:
                 - path: "infrastructure/*/kustomization.yaml"
-                # - path: "infrastructure/**/clusters/**"
-                #   exclude: true
+                - path: "infrastructure/*/*/**/kustomization.yaml"
+                  exclude: true
+                - path: "infrastructure/*/*/kustomization.yaml"
+                  exclude: true
+
           - clusters: {}
   template:
     metadata:
