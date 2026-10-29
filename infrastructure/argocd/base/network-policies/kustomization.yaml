@@ -1,0 +1,2 @@
+resources:
+- allow-argocd-application-controller-egress.yaml

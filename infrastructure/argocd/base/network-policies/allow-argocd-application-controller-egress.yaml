@@ -1,0 +1,17 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-argocd-application-controller-egress"
+spec:
+  description: "Allow argocd-application-controller traffic to argocd-repo-server port 8081/TCP"
+  endpointSelector:
+    matchLabels:
+      name: argocd-application-controller
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        name: argocd-repo-server
+    toPorts:
+    - ports:
+      - port: "8081"
+        protocol: TCP
