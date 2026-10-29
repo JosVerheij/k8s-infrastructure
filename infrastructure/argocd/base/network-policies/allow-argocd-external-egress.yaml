@@ -14,7 +14,8 @@ spec:
       - port: "443"
         protocol: TCP
     toFQDNs:
-    - matchPattern: "*.ghcr.io"
-    - matchPattern: "*.github.com"
-    - matchPattern: "*.quay.io"
+    - matchName: "ghcr.io"
+    - matchName: "github.com"
+    - matchName: "quay.io"
+    - matchName: "raw.githubusercontent.com"
 
