@@ -15,17 +15,17 @@ spec:
             repoURL: https://github.com/josverheij/k8s-infrastructure.git
             revision: HEAD
             files:
-              - path: "infrastructure/charts/*/app.yaml"
+              - path: "infrastructure/*/app.yaml"
         - clusters: {}
   template:
     metadata:
-      name: 'infra-{{ .path.basename }}'
+      name: 'infra-{{ .path.basename }}-chart'
     spec:
       project: default
       sources:
         - repoURL: '{{ .config.source.repoURL }}'
           targetRevision: '{{ .config.source.targetRevision }}'
-          path: '{{ .config.source.path }}'
+          path: . # '{{ .config.source.path }}'
           helm:
             ignoreMissingValueFiles: true
             valueFiles:
