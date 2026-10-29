@@ -45,4 +45,3 @@ spec:
           - CreateNamespace=true
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
-          - Prune=confirm
