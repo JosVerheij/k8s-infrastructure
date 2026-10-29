@@ -15,7 +15,7 @@ spec:
             repoURL: https://github.com/josverheij/k8s-infrastructure.git
             revision: HEAD
             files:
-              - path: "infrastructure/*/app.yaml"
+              - path: "infrastructure/*/helm.yaml"
         - clusters: {}
   template:
     metadata:
@@ -23,20 +23,20 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: '{{ .config.source.repoURL }}'
-          targetRevision: '{{ .config.source.targetRevision }}'
-          path: . # '{{ .config.source.path }}'
+        - repoURL: '{{ source.repoURL }}'
+          targetRevision: '{{ source.targetRevision }}'
+          path: '{{ dig "source" "path" "" . | default "." }}'
           helm:
             ignoreMissingValueFiles: true
             valueFiles:
-              - '$git-values/{{ .path.path }}/values.yaml'
-              - '$git-values/{{ .path.path }}/values-{{ .name }}.yaml'
+              - '$git-values/{{ .path.path }}/values/values.yaml'
+              - '$git-values/{{ .path.path }}/values/values-{{ .name }}.yaml'
         - repoURL: https://github.com/josverheij/k8s-infrastructure.git
           targetRevision: HEAD
           ref: git-values
       destination:
         server: '{{ .server }}'
-        namespace: '{{ dig "config" "namespace" "" . | default .path.basename }}'
+        namespace: '{{ dig "namespace" "" . | default .path.basename }}'
       syncPolicy:
         automated:
           prune: true
