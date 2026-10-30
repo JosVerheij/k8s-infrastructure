@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: appset-tenants
+  name: appset-t3-tenant-workloads
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -13,13 +13,13 @@ spec:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git
         revision: HEAD
         directories:
-          - path: "tenants/*"
+          - path: "apps/*"
 
   template:
     metadata:
-      name: 'tenant-{{ .path.basename }}'
+      name: 'app-{{ .path.basename }}'
     spec:
-      project: tenants
+      project: workloads
 
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git

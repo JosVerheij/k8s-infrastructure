@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: workloads
+  namespace: argocd
+spec:
+  description: "Tier 3: Untrusted tenant application workloads"
+
+  sourceRepos:
+    - 'https://github.com/JosVerheij/gitops-joveo.git'
+
+  destinations:
+    - server: 'https://kubernetes.default.svc'
+      namespace: 'app-*'
+
+  # No cluster-scoped resources
+  clusterResourceWhitelist: []
+
+  namespaceResourceWhitelist:
+    # Workloads
+    - group: apps
+      kind: Deployment
+    - group: apps
+      kind: StatefulSet
+    - group: apps
+      kind: DaemonSet
+    - group: batch
+      kind: Job
+    - group: batch
+      kind: CronJob
+
+    # Configuration
+    - group: ''
+      kind: ConfigMap
+    - group: ''
+      kind: Secret
+    - group: ''
+      kind: ServiceAccount
+
+    # Networking
+    - group: ''
+      kind: Service
+
+    # Storage
+    - group: ''
+      kind: PersistentVolumeClaim
+
+    # Scaling and disruption
+    - group: autoscaling
+      kind: HorizontalPodAutoscaler
+    - group: policy
+      kind: PodDisruptionBudget
+
+    # Application-level RBAC
+    - group: rbac.authorization.k8s.io
+      kind: Role
+    - group: rbac.authorization.k8s.io
+      kind: RoleBinding

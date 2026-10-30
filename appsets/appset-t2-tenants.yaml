@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: appset-apps
+  name: appset-t2-tenant-provisioning
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -9,17 +9,17 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-  - git:
-      repoURL: https://github.com/JosVerheij/gitops-joveo.git
-      revision: HEAD
-      directories:
-        - path: "apps/*"
+    - git:
+        repoURL: https://github.com/JosVerheij/gitops-joveo.git
+        revision: HEAD
+        directories:
+          - path: "tenants/*"
 
   template:
     metadata:
-      name: 'app-{{ .path.basename }}'
+      name: 'tenant-{{ .path.basename }}'
     spec:
-      project: apps
+      project: tenants
 
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git

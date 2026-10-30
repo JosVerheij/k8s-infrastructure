@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset-t1-platform-kustomize
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/JosVerheij/gitops-joveo.git
+              revision: HEAD
+              files:
+                - path: "platform/*/kustomization.yaml"
+                - path: "platform/*/*/**/kustomization.yaml"
+                  exclude: true
+                - path: "platform/*/*/kustomization.yaml"
+                  exclude: true
+
+          - clusters: {}
+  template:
+    metadata:
+      name: 'infra-{{ .path.basename }}'
+    spec:
+      project: platform
+      source:
+        repoURL: https://github.com/JosVerheij/gitops-joveo.git
+        targetRevision: HEAD
+        path: '{{ .path.path }}'
+        kustomize:
+          ignoreMissingComponents: true
+          components:
+            - clusters/{{ .name }}
+      destination:
+        server: '{{ .server }}'
+        namespace: '{{ if hasKey . "namespace" }}{{ .namespace }}{{ else }}{{ .path.basename }}{{ end }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true

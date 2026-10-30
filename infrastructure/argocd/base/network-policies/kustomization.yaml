@@ -1,3 +1,0 @@
-resources:
-- allow-argocd-internal-egress.yaml
-- allow-argocd-external-egress.yaml

@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default  # tier-0
+  namespace: argocd
+spec:
+  description: "Tier 0: Cluster foundation, networking, storage and infrastructure primitives"
+
+  sourceRepos:
+    - 'https://github.com/JosVerheij/gitops-joveo.git'
+    - 'oci://quay.io/cilium/charts/cilium'
+    - 'oci://ghcr.io/piraeusdatastore/piraeus-operator/piraeus'
+
+  destinations:
+    - server: 'https://kubernetes.default.svc'
+      namespace: '*'
+
+  clusterResourceWhitelist:
+    # Kubernetes API extensions
+    - group: 'apiextensions.k8s.io'
+      kind: 'CustomResourceDefinition'
+
+    # Cluster namespaces
+    - group: ''
+      kind: 'Namespace'
+
+    # Cluster RBAC
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRole'
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRoleBinding'
+
+    # Cilium cluster infrastructure
+    - group: 'cilium.io'
+      kind: '*'
+
+    # Storage infrastructure
+    - group: 'storage.k8s.io'
+      kind: 'StorageClass'
+    - group: 'storage.k8s.io'
+      kind: 'CSIDriver'
+    - group: 'snapshot.storage.k8s.io'
+      kind: '*'
+
+    # Piraeus / LINSTOR cluster resources
+    - group: 'piraeus.io'
+      kind: '*'
+    - group: 'linstor.linbit.com'
+      kind: '*'
+
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

@@ -1,0 +1,3 @@
+resources:
+- argocd-internal-egress.yaml
+- argocd-external-egress.yaml

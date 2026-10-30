@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envoy-tls-config
+  namespace: app-jellyfin
+data:
+  envoy.yaml: |
+    static_resources:
+      listeners:
+      - name: https_listener
+        address:
+          socket_address:
+            address: 0.0.0.0
+            port_value: 8443
+        filter_chains:
+        - transport_socket:
+            name: envoy.transport_sockets.tls
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+              common_tls_context:
+                alpn_protocols: ["h2", "http/1.1"]
+                tls_params:
+                  tls_minimum_protocol_version: TLSv1_2
+                  tls_maximum_protocol_version: TLSv1_3
+                tls_certificates:
+                - certificate_chain:
+                    filename: /etc/certs/tls.crt
+                  private_key:
+                    filename: /etc/certs/tls.key
+                  watched_directory:
+                    path: /etc/certs
+          filters:
+          - name: envoy.filters.network.http_connection_manager
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+              stat_prefix: ingress_http
+              codec_type: AUTO
+              use_remote_address: true
+              route_config:
+                name: local_route
+                virtual_hosts:
+                - name: jellyfin_backend
+                  domains: ["*"]
+                  routes:
+                  - match:
+                      prefix: "/"
+                    route:
+                      cluster: jellyfin_local
+                      timeout: 0s
+                      idle_timeout: 0s
+                      upgrade_configs:
+                      - upgrade_type: "websocket"
+                  response_headers_to_add:
+                  - header:
+                      key: "strict-transport-security"
+                      value: "max-age=31536000; includeSubDomains"
+                  - header:
+                      key: "x-content-type-options"
+                      value: "nosniff"
+                  - header:
+                      key: "x-frame-options"
+                      value: "SAMEORIGIN"
+                  - header:
+                      key: "referrer-policy"
+                      value: "strict-origin-when-cross-origin"
+                  - header:
+                      key: "permissions-policy"
+                      value: "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                  - header:
+                      key: "content-security-policy"
+                      value: "default-src https: data: blob: ; img-src 'self' https: data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self';"
+              http_filters:
+              - name: envoy.filters.http.router
+                typed_config:
+                  "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+      clusters:
+      - name: jellyfin_local
+        type: STRICT_DNS
+        lb_policy: ROUND_ROBIN
+        load_assignment:
+          cluster_name: jellyfin_local
+          endpoints:
+          - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: 127.0.0.1
+                    port_value: 8096

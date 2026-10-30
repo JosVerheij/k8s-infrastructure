@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset-t0-infrastructure-helm
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+        - git:
+            repoURL: https://github.com/JosVerheij/gitops-joveo.git
+            revision: HEAD
+            files:
+              - path: "infrastructure/*/helm.yaml"
+              - path: "infrastructure/*/*/**/helm.yaml"
+                exclude: true
+              - path: "infrastructure/*/*/helm.yaml"
+                exclude: true
+        - clusters: {}
+  template:
+    metadata:
+      name: 'infra-{{ .path.basename }}-chart'
+    spec:
+      project: default
+      sources:
+        - repoURL: '{{ .source.repoURL }}'
+          targetRevision: '{{ .source.targetRevision }}'
+          path: '{{ dig "source" "path" "" . | default "." }}'
+          helm:
+            ignoreMissingValueFiles: true
+            valueFiles:
+              - '$git-values/{{ .path.path }}/values/values.yaml'
+              - '$git-values/{{ .path.path }}/values/values-{{ .name }}.yaml'
+        - repoURL: https://github.com/JosVerheij/gitops-joveo.git
+          targetRevision: HEAD
+          ref: git-values
+      destination:
+        server: '{{ .server }}'
+        namespace: '{{ dig "namespace" "" . | default .path.basename }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true

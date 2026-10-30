@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: tenants
+  namespace: argocd
+spec:
+  description: "Tier 2: Tenant provisioning, isolation, routing and resource governance"
+
+  sourceRepos:
+    - 'https://github.com/JosVerheij/gitops-joveo.git'
+
+  destinations:
+    - server: 'https://kubernetes.default.svc'
+      namespace: 'app-*'
+
+  # Only cluster-scoped resource tenants may provision
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace
+
+  namespaceResourceWhitelist:
+    # Tenant network isolation
+    - group: 'cilium.io'
+      kind: CiliumNetworkPolicy
+
+    # Tenant routing
+    - group: 'gateway.networking.k8s.io'
+      kind: HTTPRoute
+    # TBD:
+    # - group: gateway.networking.k8s.io
+    #   kind: ReferenceGrant
+
+    # Tenant resource governance
+    - group: ''
+      kind: ResourceQuota
+    - group: ''
+      kind: LimitRange
+
+    # Tenant certificate requests
+    - group: 'cert-manager.io'
+      kind: Certificate
+
+    # Tenant configuration
+    - group: ''
+      kind: ConfigMap
+
+    # Tenant-owned service accounts
+    - group: ''
+      kind: ServiceAccount
+
+    # Tenant RBAC
+    - group: 'rbac.authorization.k8s.io'
+      kind: Role
+    - group: 'rbac.authorization.k8s.io'
+      kind: RoleBinding

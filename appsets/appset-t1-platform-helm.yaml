@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: appset-infra-charts
+  name: appset-t1-platform-helm
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -15,17 +15,17 @@ spec:
             repoURL: https://github.com/JosVerheij/gitops-joveo.git
             revision: HEAD
             files:
-              - path: "infrastructure/*/helm.yaml"
-              - path: "infrastructure/*/*/**/helm.yaml"
+              - path: "platform/*/helm.yaml"
+              - path: "platform/*/*/**/helm.yaml"
                 exclude: true
-              - path: "infrastructure/*/*/helm.yaml"
+              - path: "platform/*/*/helm.yaml"
                 exclude: true
         - clusters: {}
   template:
     metadata:
       name: 'infra-{{ .path.basename }}-chart'
     spec:
-      project: default
+      project: platform
       sources:
         - repoURL: '{{ .source.repoURL }}'
           targetRevision: '{{ .source.targetRevision }}'
