@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: tenants
+  namespace: argocd
+spec:
+  description: "Tier 2: Tenant provisioning, Cilium policies, and routing contracts"
+  sourceRepos:
+    - 'https://github.com/JosVerheij/gitops-joveo.git'
+  destinations:
+    - server: 'https://kubernetes.default.svc'
+      namespace: 'app-*'
+  # Only allowed cluster-level resource is creating tenant Namespaces
+  clusterResourceWhitelist:
+    - group: ''
+      kind: 'Namespace'
+  # Manages the boundary configurations enclosing the workloads
+  namespaceResourceWhitelist:
+    - group: 'cilium.io'
+      kind: 'CiliumNetworkPolicy'
+    - group: 'gateway.networking.k8s.io'
+      kind: 'HTTPRoute'
+    - group: ''
+      kind: 'ResourceQuota'
+    - group: ''
+      kind: 'LimitRange'
+    - group: ''
+      kind: 'Secret'
+    - group: ''
+      kind: 'ConfigMap'

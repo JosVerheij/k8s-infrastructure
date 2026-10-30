@@ -1,2 +1,4 @@
 resources:
-- base/
+- project-apps.yaml
+- project-tenants.yaml
+- project-default.yaml

@@ -12,7 +12,7 @@ spec:
     - matrix:
         generators:
         - git:
-            repoURL: https://github.com/josverheij/k8s-infrastructure.git
+            repoURL: https://github.com/JosVerheij/gitops-joveo.git
             revision: HEAD
             files:
               - path: "infrastructure/*/helm.yaml"
@@ -35,7 +35,7 @@ spec:
             valueFiles:
               - '$git-values/{{ .path.path }}/values/values.yaml'
               - '$git-values/{{ .path.path }}/values/values-{{ .name }}.yaml'
-        - repoURL: https://github.com/josverheij/k8s-infrastructure.git
+        - repoURL: https://github.com/JosVerheij/gitops-joveo.git
           targetRevision: HEAD
           ref: git-values
       destination:

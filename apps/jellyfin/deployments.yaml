@@ -1,0 +1,39 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: app-jellyfin
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: jellyfin
+        image: ghcr.io/jellyfin/jellyfin:12.4@sha256:fea863d0cd9ec445985d9c75fc6ed64e38a1d2766cf0c250a33d553f4fc1b771
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          runAsNonRoot: true
+          # runAsUser: 2315  # 1100
+          # runAsGroup: 2315  # 3100
+          # fsGroup: 2100
+          # supplementalGroups: [4000]
+          readOnlyRootFilesystem: true
+          seccompProfile:
+            type: RuntimeDefault
+---
+# service.yaml
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: jellyfin-service
+#   namespace: app-jellyfin
+# spec:
+#   type: ClusterIP
+#   ports:
+#   - port: 8096
+#     targetPort: 8096
+#   selector:
+#     app.kubernetes.io/name: jellyfin

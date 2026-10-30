@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset-apps
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - git:
+      repoURL: https://github.com/JosVerheij/gitops-joveo.git
+      revision: HEAD
+      directories:
+        - path: "apps/*"
+
+  template:
+    metadata:
+      name: 'app-{{ .path.basename }}'
+    spec:
+      project: apps
+
+      source:
+        repoURL: https://github.com/JosVerheij/gitops-joveo.git
+        targetRevision: HEAD
+        path: '{{ .path.path }}'
+
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 'app-{{ .path.basename }}'
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
