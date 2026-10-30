@@ -46,6 +46,8 @@ spec:
             name: jellyfin-config-templates
             defaultMode: 0440
         # Dedicated scratch spaces to prevent cross-container bleed
+        - name: jellyfin-config
+          emptyDir: {}
         - name: jellyfin-home
           emptyDir: {}
         - name: jellyfin-tmp
@@ -58,8 +60,8 @@ spec:
         # TEMP TEMP TEMP
         - name: jellyfin-data
           emptyDir: {}
-        - name: jellyfin-config
-          emptyDir: {}
+          # persistentVolumeClaim
+
         # ENDTEMP
 
       initContainers:
@@ -96,8 +98,6 @@ spec:
             - name: xml-templates
               mountPath: /templates
               readOnly: true
-            - name: jellyfin-tmp
-              mountPath: /tmp
 
         # 2. Native Envoy TLS Sidecar
         - name: tls-proxy
@@ -190,20 +190,3 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
 
-  volumeClaimTemplates: []
-  #   - metadata:
-  #       name: jellyfin-config
-  #     spec:
-  #       accessModes: ["ReadWriteOnce"]
-  #       storageClassName: piraeus-storage
-  #       resources:
-  #         requests:
-  #           storage: 20Gi
-  #   - metadata:
-  #       name: jellyfin-data
-  #     spec:
-  #       accessModes: ["ReadWriteOnce"]
-  #       storageClassName: piraeus-storage
-  #       resources:
-  #         requests:
-  #           storage: 20Gi
