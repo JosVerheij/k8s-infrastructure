@@ -7,8 +7,10 @@ spec:
   description: "Tier 1: Cluster operators, CRDs, and controllers"
   sourceRepos:
     - 'https://github.com/JosVerheij/gitops-joveo.git'
-    - 'https://helm.cilium.io/'
-    - 'https://kyverno.github.io/kyverno/'
+    - 'oci://quay.io/cilium/charts/cilium/'
+    - 'oci://ghcr.io/kyverno/charts/kyverno'
+    - 'oci://quay.io/jetstack/charts/cert-manager'
+    - 'oci://ghcr.io/piraeusdatastore/piraeus-operator/piraeus'
   destinations:
     - server: 'https://kubernetes.default.svc'
       namespace: '*'
