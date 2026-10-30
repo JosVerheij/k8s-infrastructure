@@ -7,4 +7,4 @@ namespace: cert-manager
 #   - base/namespaces.yaml
 
 generators:
-  - base/secret-generator.yaml
+  - base/
