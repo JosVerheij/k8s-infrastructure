@@ -16,6 +16,11 @@ spec:
     toFQDNs:
     - matchName: "ghcr.io"
     - matchName: "github.com"
+    - matchName: "github.io"
     - matchName: "quay.io"
-    - matchName: "raw.githubusercontent.com"
+    - matchPattern: "*.ghcr.io"
+    - matchPattern: "*.github.com"
+    - matchPattern: "*.github.io"
+    - matchPattern: "*.quay.io"
+    - matchPattern: "*.githubusercontent.com"
 

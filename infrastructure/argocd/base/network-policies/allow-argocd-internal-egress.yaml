@@ -24,8 +24,14 @@ specs:
 
 - description: "Allow traffic to argocd-redis"
   endpointSelector:
-    matchLabels:
-      app.kubernetes.io/name: argocd-server
+    matchExpressions:
+    - key: app.kubernetes.io/name
+      operator: In
+      values:
+      - argocd-server
+      - argocd-repo-server
+      - argocd-application-controller
+      - argocd-applicationset-controller
   egress:
   - toEndpoints:
     - matchLabels:
