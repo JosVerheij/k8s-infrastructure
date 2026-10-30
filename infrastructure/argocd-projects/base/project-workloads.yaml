@@ -11,5 +11,9 @@ spec:
   - server: '*'
     namespace: 'app-*'
 
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+
   # Blocks any cluster resource creation by app.
   clusterResourceWhitelist: []
