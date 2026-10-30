@@ -22,8 +22,8 @@ spec:
           capabilities:
             drop: ["ALL"]
           runAsNonRoot: true
-          # runAsUser: 2315  # 1100
-          # runAsGroup: 2315  # 3100
+          runAsUser: 1000 # 2315  # 1100
+          runAsGroup: 1000 # 2315  # 3100
           # fsGroup: 2100
           # supplementalGroups: [4000]
           readOnlyRootFilesystem: true
