@@ -3,8 +3,7 @@ kind: ApplicationSet
 metadata:
   name: appset-t2-tenant-provisioning
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]

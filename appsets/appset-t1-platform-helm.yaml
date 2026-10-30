@@ -3,11 +3,11 @@ kind: ApplicationSet
 metadata:
   name: appset-t1-platform-helm
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
+
   generators:
     - matrix:
         generators:
@@ -21,11 +21,14 @@ spec:
               - path: "platform/*/*/helm.yaml"
                 exclude: true
         - clusters: {}
+
   template:
     metadata:
       name: 'infra-{{ .path.basename }}-chart'
+
     spec:
       project: platform
+
       sources:
         - repoURL: '{{ .source.repoURL }}'
           targetRevision: '{{ .source.targetRevision }}'
@@ -38,9 +41,11 @@ spec:
         - repoURL: https://github.com/JosVerheij/gitops-joveo.git
           targetRevision: HEAD
           ref: git-values
+
       destination:
         server: '{{ .server }}'
         namespace: '{{ dig "namespace" "" . | default .path.basename }}'
+
       syncPolicy:
         automated:
           prune: true
