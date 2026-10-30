@@ -7,7 +7,7 @@ spec:
   description: "Tier 1: Cluster operators, CRDs, and controllers"
   sourceRepos:
     - 'https://github.com/JosVerheij/gitops-joveo.git'
-    - 'oci://quay.io/cilium/charts/cilium/'
+    - 'oci://quay.io/cilium/charts/cilium'
     - 'oci://ghcr.io/kyverno/charts/kyverno'
     - 'oci://quay.io/jetstack/charts/cert-manager'
     - 'oci://ghcr.io/piraeusdatastore/piraeus-operator/piraeus'
