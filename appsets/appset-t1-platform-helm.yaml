@@ -24,7 +24,7 @@ spec:
 
   template:
     metadata:
-      name: 'infra-{{ .path.basename }}-chart'
+      name: 'platform-{{ .path.basename }}-chart'
 
     spec:
       project: platform
