@@ -3,14 +3,16 @@ kind: ApplicationSet
 metadata:
   name: appset-t0-infrastructure-kustomize
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
 
   # Preserve deployed resources if this ApplicationSet is deleted.
-  syncPolicy:
-    preserveResourcesOnDeletion: true
+  # syncPolicy:
+  #   preserveResourcesOnDeletion: true
 
   generators:
     - matrix:
