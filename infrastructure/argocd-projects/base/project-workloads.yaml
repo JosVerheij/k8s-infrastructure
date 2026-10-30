@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: workloads
+spec:
+  sourceRepos: []
+  sourceNamespaces: []
+
+  destinations:
+  - server: '*'
+    namespace: 'app-*'
+
+  # Blocks any cluster resource creation by app.
+  clusterResourceWhitelist: []

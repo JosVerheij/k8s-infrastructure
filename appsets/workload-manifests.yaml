@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: app-manifests
+  name: workload-manifests
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,12 +20,13 @@ spec:
                   exclude: true
                 - path: "workloads/*/*/kustomization.yaml"
                   exclude: true
+
           - clusters: {}
   template:
     metadata:
       name: 'app-{{ .path.basename }}'
     spec:
-      project: default
+      project: workloads
       source:
         repoURL: https://github.com/josverheij/k8s-infrastructure.git
         targetRevision: HEAD
@@ -36,7 +37,7 @@ spec:
             - clusters/{{ .name }}
       destination:
         server: '{{ .server }}'
-        namespace: '{{ if hasKey . "namespace" }}{{ .namespace }}{{ else }}{{ .path.basename }}{{ end }}'
+        namespace: 'app-{{ .path.basename }}'
       syncPolicy:
         automated:
           prune: true
