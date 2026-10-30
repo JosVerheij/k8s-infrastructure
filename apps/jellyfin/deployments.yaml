@@ -34,9 +34,9 @@ spec:
         - name: http
           containerPort: 8096
           protocol: TCP
-        - name: http
+        - name: https
           containerPort: 8920
-          protocol: https
+          protocol: TCP
 
         readinessProbe:
           httpGet:
@@ -52,18 +52,18 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
 
-        metrics:
-          enabled: true
-          serviceMonitor:
-            enabled: true
+        # metrics:
+        #   enabled: true
+        #   serviceMonitor:
+        #     enabled: true
 
-        resources:
-          requests:
-            cpu: 50m
-            memory: 32Mi
-          limits:
-            cpu: 250m
-            memory: 128Mi
+        # resources:
+        #   requests:
+        #     cpu: 50m
+        #     memory: 32Mi
+        #   limits:
+        #     cpu: 250m
+        #     memory: 128Mi
 #---
 # service.yaml
 # apiVersion: v1
