@@ -8,6 +8,11 @@ metadata:
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
+
+  # Preserve deployed resources if this ApplicationSet is deleted.
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+
   generators:
     - matrix:
         generators:
@@ -21,11 +26,14 @@ spec:
               - path: "infrastructure/*/*/helm.yaml"
                 exclude: true
         - clusters: {}
+
   template:
     metadata:
       name: 'infra-{{ .path.basename }}-chart'
+
     spec:
       project: default
+
       sources:
         - repoURL: '{{ .source.repoURL }}'
           targetRevision: '{{ .source.targetRevision }}'
@@ -38,9 +46,11 @@ spec:
         - repoURL: https://github.com/JosVerheij/gitops-joveo.git
           targetRevision: HEAD
           ref: git-values
+
       destination:
         server: '{{ .server }}'
         namespace: '{{ dig "namespace" "" . | default .path.basename }}'
+
       syncPolicy:
         automated:
           prune: true

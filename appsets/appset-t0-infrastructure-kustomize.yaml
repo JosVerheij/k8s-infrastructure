@@ -3,11 +3,15 @@ kind: ApplicationSet
 metadata:
   name: appset-t0-infrastructure-kustomize
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
+
+  # Preserve deployed resources if this ApplicationSet is deleted.
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+
   generators:
     - matrix:
         generators:
@@ -22,11 +26,14 @@ spec:
                   exclude: true
 
           - clusters: {}
+
   template:
     metadata:
       name: 'infra-{{ .path.basename }}'
+
     spec:
       project: default
+
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git
         targetRevision: HEAD
@@ -35,9 +42,11 @@ spec:
           ignoreMissingComponents: true
           components:
             - clusters/{{ .name }}
+
       destination:
         server: '{{ .server }}'
         namespace: '{{ if hasKey . "namespace" }}{{ .namespace }}{{ else }}{{ .path.basename }}{{ end }}'
+
       syncPolicy:
         automated:
           prune: true
