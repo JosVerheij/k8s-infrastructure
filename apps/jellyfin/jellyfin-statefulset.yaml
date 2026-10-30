@@ -1,14 +1,14 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: jellyfin
   namespace: app-jellyfin
   labels:
     app.kubernetes.io/name: jellyfin
 spec:
-  serviceName: jellyfin
   replicas: 1
-  podManagementPolicy: OrderedReady
+  # strategy:
+  #   type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: jellyfin
