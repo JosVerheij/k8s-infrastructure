@@ -4,8 +4,9 @@ metadata:
   name: workloads
   namespace: argocd
 spec:
-  # sourceRepos: []
-  # sourceNamespaces: []
+  sourceRepos:
+  - '*'
+
   destinations:
   - server: '*'
     namespace: 'app-*'
