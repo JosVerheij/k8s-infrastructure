@@ -18,6 +18,7 @@ spec:
     - matchName: "github.com"
     - matchName: "github.io"
     - matchName: "quay.io"
+    - matchName: "hub.docker.com"
     - matchPattern: "*.ghcr.io"
     - matchPattern: "*.github.com"
     - matchPattern: "*.github.io"
