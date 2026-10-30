@@ -1,6 +1,0 @@
-config:
-  name: jellyfin
-  source:
-    chart: jellyfin/jellyfin
-    repoURL: https://jellyfin.github.io/jellyfin-helm
-    targetRevision: 3.7.0
