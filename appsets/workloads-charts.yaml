@@ -29,11 +29,8 @@ spec:
       sources:
         - repoURL: '{{ .source.repoURL }}'
           targetRevision: '{{ .source.targetRevision }}'
-          {{- if .source.chart }}
-          chart: '{{ .source.chart }}'
-          {{- else }}
+          chart: '{{ dig "source" "chart" "" . | default "" }}'
           path: '{{ dig "source" "path" "" . | default "." }}'
-          {{- end }}
           helm:
             ignoreMissingValueFiles: true
             valueFiles:
