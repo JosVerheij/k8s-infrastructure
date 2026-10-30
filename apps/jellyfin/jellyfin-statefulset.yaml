@@ -91,7 +91,7 @@ spec:
             capabilities:
               drop: ["ALL"]
           volumeMounts:
-            - name: config
+            - name: jellyfin-config
               mountPath: /config
             - name: xml-templates
               mountPath: /templates
@@ -166,7 +166,7 @@ spec:
             capabilities:
               drop: ["ALL"]
           volumeMounts:
-            - name: config
+            - name: jellyfin-config
               mountPath: /config
             - name: jellyfin-cache
               mountPath: /cache
