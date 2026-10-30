@@ -1,0 +1,29 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: jellyfin-policy
+  namespace: app-jellyfin
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: jellyfin
+  ingress:
+    # [REMEDIATION Zero-Trust]: Scoped to authorized Gateway/Client namespaces only
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: infra-gateways
+            app.kubernetes.io/name: cilium-gateway
+      toPorts:
+        - ports:
+            - port: "8443"
+              protocol: TCP
+  egress:
+    # Metadata Providers
+    - toFQDNs:
+        - matchPattern: "*.themoviedb.org"
+        - matchPattern: "*.thetvdb.com"
+        - matchPattern: "*.musicbrainz.org"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

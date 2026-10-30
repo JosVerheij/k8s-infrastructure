@@ -3,17 +3,13 @@ kind: Service
 metadata:
   name: jellyfin
   labels:
-    app: jellyfin
+    app.kubernetes.io/name: jellyfin
 spec:
   type: ClusterIP
   selector:
-    app: jellyfin
+    app.kubernetes.io/name: jellyfin
   ports:
-    - name: http
-      port: 8096
-      targetPort: http
-      protocol: TCP
     - name: https
-      port: 8920
-      targetPort: https
+      port: 8443
+      targetPort: 8443
       protocol: TCP

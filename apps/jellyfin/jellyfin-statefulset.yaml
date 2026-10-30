@@ -1,0 +1,192 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jellyfin
+  namespace: app-jellyfin
+  labels:
+    app.kubernetes.io/name: jellyfin
+spec:
+  serviceName: jellyfin
+  replicas: 1
+  podManagementPolicy: OrderedReady
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jellyfin
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: jellyfin
+    spec:
+      terminationGracePeriodSeconds: 60
+
+      # [REMEDIATION CIS 5.1.6]: Block Kube-API credential projection
+      automountServiceAccountToken: false
+
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile:
+          type: RuntimeDefault
+
+      volumes:
+        # [REMEDIATION CIS 5.4.1]: Enforce strict read-only file permissions
+        - name: tls-secret
+          secret:
+            secretName: jellyfin-internal-tls
+            defaultMode: 0400
+        - name: envoy-conf
+          configMap:
+            name: envoy-tls-config
+            defaultMode: 0440
+        - name: xml-templates
+          configMap:
+            name: jellyfin-config-templates
+            defaultMode: 0440
+        # Dedicated scratch spaces to prevent cross-container bleed
+        - name: jellyfin-home
+          emptyDir: {}
+        - name: jellyfin-tmp
+          emptyDir: {}
+        - name: envoy-tmp
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+
+      initContainers:
+        # 1. Config Bootstrapper
+        - name: config-bootstrap
+          image: alpine:3.24.3@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              # Seed any XML template provided by the ConfigMap if absent on the PVC
+              for src in /templates/*.xml; do
+                [ -e "$src" ] || continue
+                filename=$(basename "$src")
+                dest="/config/config/$filename"
+                if [ ! -f "$dest" ]; then
+                  cp "$src" "$dest"
+                fi
+              done
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 200m
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: xml-templates
+              mountPath: /templates
+              readOnly: true
+            - name: jellyfin-tmp
+              mountPath: /tmp
+
+        # 2. Native Envoy TLS Sidecar
+        - name: tls-proxy
+          # [REMEDIATION CIS 5.2.1]: Pinned immutable image
+          image: envoyproxy/envoy:distroless-v1.40.2@sha256:09ca6f2140a61ad8df11779a4a30d52b48433d444466328494f9188c9c35eded
+          restartPolicy: Always
+          args: ["-c", "/etc/envoy/envoy.yaml"]
+          ports:
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 20m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tls-secret
+              mountPath: /etc/certs
+              readOnly: true
+            - name: envoy-conf
+              mountPath: /etc/envoy
+              readOnly: true
+            - name: envoy-tmp
+              mountPath: /tmp
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 2
+            periodSeconds: 5
+
+      containers:
+        # Main Jellyfin Monolith
+        - name: jellyfin
+          image: ghcr.io/jellyfin/jellyfin:12.4@sha256:fea863d0cd9ec445985d9c75fc6ed64e38a1d2766cf0c250a33d553f4fc1b771
+          env:
+            - name: HOME
+              value: /home/jellyfin
+            - name: DOTNET_CLI_HOME
+              value: /home/jellyfin/.dotnet
+            - name: JELLYFIN_CONFIG_DIR
+              value: /config
+            - name: JELLYFIN_DATA_DIR
+              value: /config/data
+            - name: JELLYFIN_LOG_DIR
+              value: /config/log
+            - name: JELLYFIN_CACHE_DIR
+              value: /cache
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: cache
+              mountPath: /cache
+            - name: jellyfin-home
+              mountPath: /home/jellyfin
+            - name: jellyfin-tmp
+              mountPath: /tmp
+          # [REMEDIATION]: StartupProbe protects SQLite schema migrations from liveness loops
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 10
+            periodSeconds: 30
+
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: piraeus-storage
+        resources:
+          requests:
+            storage: 20Gi
