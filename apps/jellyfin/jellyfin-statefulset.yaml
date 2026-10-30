@@ -147,8 +147,8 @@ spec:
               value: /home/jellyfin/.dotnet
             - name: JELLYFIN_CONFIG_DIR
               value: /config
-            - name: JELLYFIN_DATA_DIR
-              value: /config/data
+            # - name: JELLYFIN_DATA_DIR
+            #   value: /config/data
             - name: JELLYFIN_LOG_DIR
               value: /config/log
             - name: JELLYFIN_CACHE_DIR
@@ -168,27 +168,29 @@ spec:
           volumeMounts:
             - name: jellyfin-config
               mountPath: /config
+            - name: jellyfin-data
+              mountPath: /data
             - name: jellyfin-cache
               mountPath: /cache
             - name: jellyfin-home
               mountPath: /home/jellyfin
             - name: jellyfin-tmp
               mountPath: /tmp
-          # [REMEDIATION]: StartupProbe protects SQLite schema migrations from liveness loops
+
           startupProbe:
             httpGet:
               path: /health
               port: 8096
-            failureThreshold: 30
-            periodSeconds: 10
+            failureThreshold: 5
+            periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /health
               port: 8096
-            initialDelaySeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 30
+            periodSeconds: 10
 
-  # volumeClaimTemplates:
+  volumeClaimTemplates: []
   #   - metadata:
   #       name: jellyfin-config
   #     spec:
