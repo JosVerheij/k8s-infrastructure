@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: tenants
+  name: t2-tenants
   namespace: argocd
 spec:
   description: "Tier 2: Tenant provisioning, isolation, routing and resource governance"

@@ -20,7 +20,7 @@ spec:
     metadata:
       name: 'tenant-{{ .path.basename }}'
     spec:
-      project: tenants
+      project: t2-tenants
 
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git

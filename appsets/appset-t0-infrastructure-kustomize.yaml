@@ -3,8 +3,6 @@ kind: ApplicationSet
 metadata:
   name: appset-t0-infrastructure-kustomize
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 
 spec:
   goTemplate: true
@@ -34,7 +32,7 @@ spec:
       name: 'infra-{{ .path.basename }}'
 
     spec:
-      project: default
+      project: t0-infrastructure
 
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git

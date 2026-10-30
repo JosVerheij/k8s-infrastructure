@@ -30,7 +30,7 @@ spec:
       name: 'platform-{{ .path.basename }}'
 
     spec:
-      project: platform
+      project: t1-platform
 
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git

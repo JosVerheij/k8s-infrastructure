@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: default  # tier-0
+  name: t0-infrastructure  # tier-0
   namespace: argocd
 spec:
   description: "Tier 0: Cluster foundation, networking, storage and infrastructure primitives"

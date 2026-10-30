@@ -20,7 +20,7 @@ spec:
     metadata:
       name: 'app-{{ .path.basename }}'
     spec:
-      project: workloads
+      project: t3-workloads
 
       source:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git

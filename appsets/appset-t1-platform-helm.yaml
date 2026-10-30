@@ -29,7 +29,7 @@ spec:
       name: 'platform-{{ .path.basename }}-chart'
 
     spec:
-      project: platform
+      project: t1-platform
 
       sources:
         - repoURL: '{{ .source.repoURL }}'

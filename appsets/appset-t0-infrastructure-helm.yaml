@@ -3,8 +3,7 @@ kind: ApplicationSet
 metadata:
   name: appset-t0-infrastructure-helm
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
+
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -32,7 +31,7 @@ spec:
       name: 'infra-{{ .path.basename }}-chart'
 
     spec:
-      project: default
+      project: t0-infrastructure
 
       sources:
         - repoURL: '{{ .source.repoURL }}'

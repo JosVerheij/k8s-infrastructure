@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: workloads
+  name: t3-workloads
   namespace: argocd
 spec:
   description: "Tier 3: Untrusted tenant application workloads"
