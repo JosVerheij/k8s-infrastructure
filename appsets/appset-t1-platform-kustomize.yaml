@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: appset-t1-platform-kustomize
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 
 spec:
   goTemplate: true

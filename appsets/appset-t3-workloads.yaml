@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: appset-t3-tenant-workloads
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 
 spec:
   goTemplate: true
