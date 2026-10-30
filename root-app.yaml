@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/josverheij/k8s-infrastructure.git
+    repoURL: https://github.com/JosVerheij/gitops-joveo.git
     targetRevision: HEAD
     path: appsets
   destination:
