@@ -14,7 +14,7 @@ specs:
   ingress:
     - fromEndpoints:
       - matchLabels:
-          io.kubernetes.pod.namespace: argocd
+          io.cilium.k8s.namespace.labels.kubernetes.io/metadata.name: argocd
       toPorts:
       - ports:
         - port: "8081"
