@@ -17,14 +17,14 @@ specs:
       - port: "8081"
         protocol: TCP
 
-- description: "Allow EGRESS to argocd-redis"
-  endpointSelector: {}
-  egress:
-  - toEndpoints:
-    - matchLabels:
-        k8s-app: argocd-redis
-    toPorts:
-    - ports:
-      - port: "6379"
-        protocol: TCP
+# - description: "Allow EGRESS to argocd-redis"
+#   endpointSelector: {}
+#   egress:
+#   - toEndpoints:
+#     - matchLabels:
+#         io.cilium.k8s.policy.serviceaccount: argocd-redis
+#     toPorts:
+#     - ports:
+#       - port: "6379"
+#         protocol: TCP
 
