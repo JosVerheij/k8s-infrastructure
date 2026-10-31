@@ -18,7 +18,7 @@ spec:
 
   template:
     metadata:
-      name: name: 'app-{{ index .path.segments 1 }}-{{ .path.basename }}'
+      name: 'app-{{ index .path.segments 1 }}-{{ .path.basename }}'
     spec:
       project: t3-workloads
 
