@@ -2,4 +2,4 @@ resources:
 # - argocd-internal-ingress.yaml
 - argocd-internal-egress.yaml
 
-# - argocd-external-egress.yaml
+- argocd-external-egress.yaml
