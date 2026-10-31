@@ -28,8 +28,8 @@ spec:
             - -c
             - |
               cp -R /jellyfin/jellyfin-web/. /target/
-              # Set default server to origin in upstream config.json without extra images
-              sed -i 's/"servers": \[\]/"servers": \["https://localhost:8443"\]/' /target/config.json
+              # Set default server to origin in upstream config.json
+              sed -i 's#"servers": \[\]#"servers": \["https://localhost:8443"\]#' /target/config.json
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
