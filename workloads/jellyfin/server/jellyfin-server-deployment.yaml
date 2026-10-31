@@ -6,8 +6,8 @@ metadata:
     app.kubernetes.io/name: jellyfin-server
 spec:
   replicas: 1
-  # strategy:
-  #   type: Recreate
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: jellyfin-server
@@ -30,16 +30,16 @@ spec:
           type: RuntimeDefault
 
       volumes:
-        # - name: tls-secret
-        #   secret:
-        #     secretName: jellyfin-internal-tls
-        # - name: envoy-conf
-        #   configMap:
-        #     name: envoy-tls-config
+        - name: tls-secret
+          secret:
+            secretName: jellyfin-server-internal-tls
+        - name: envoy-conf
+          configMap:
+            name: envoy-tls-config
         - name: jellyfin-server-xml-templates
           configMap:
             name: jellyfin-server-config-templates
-        # Dedicated scratch spaces to prevent cross-container bleed
+
         - name: jellyfin-server-config
           emptyDir: {}
         - name: jellyfin-server-home
@@ -48,8 +48,8 @@ spec:
           emptyDir: {}
         - name: jellyfin-server-cache
           emptyDir: {}
-        # - name: envoy-tmp
-        #   emptyDir: {}
+        - name: envoy-tmp
+          emptyDir: {}
 
         # TEMP TEMP TEMP
         - name: jellyfin-server-data
@@ -61,19 +61,16 @@ spec:
         # ENDTEMP
 
       initContainers:
-        # 1. Config Bootstrapper
         - name: config-bootstrap
           image: alpine:3
           command: ["/bin/sh", "-c"]
           args:
             - |
-              mkdir -p /config/config
-
-              # Seed any XML template provided by the ConfigMap if absent on the PVC
+              # Copy templates directly to /config (aligned with JELLYFIN_CONFIG_DIR)
               for src in /templates/*.xml; do
                 [ -e "$src" ] || continue
                 filename=$(basename "$src")
-                dest="/config/config/$filename"
+                dest="/config/$filename"
                 if [ ! -f "$dest" ]; then
                   cp "$src" "$dest"
                 fi
@@ -81,13 +78,15 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 512Mi
+              memory: 64Mi
             limits:
-              cpu: 1000m
-              memory: 2Gi
+              cpu: 500m
+              memory: 128Mi
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
             capabilities:
               drop: ["ALL"]
           volumeMounts:
@@ -97,42 +96,49 @@ spec:
               mountPath: /templates
               readOnly: true
 
-        # 2. Native Envoy TLS Sidecar
-        # - name: tls-proxy
-        #   # [REMEDIATION CIS 5.2.1]: Pinned immutable image
-        #   image: envoyproxy/envoy:distroless-v1.40.2@sha256:09ca6f2140a61ad8df11779a4a30d52b48433d444466328494f9188c9c35eded
-        #   restartPolicy: Always
-        #   args: ["-c", "/etc/envoy/envoy.yaml"]
-        #   ports:
-        #     - name: https
-        #       containerPort: 8443
-        #       protocol: TCP
-        #   resources:
-        #     requests:
-        #       cpu: 20m
-        #       memory: 32Mi
-        #     limits:
-        #       cpu: 200m
-        #       memory: 64Mi
-        #   securityContext:
-        #     allowPrivilegeEscalation: false
-        #     readOnlyRootFilesystem: true
-        #     capabilities:
-        #       drop: ["ALL"]
-        #   volumeMounts:
-        #     - name: tls-secret
-        #       mountPath: /etc/certs
-        #       readOnly: true
-        #     - name: envoy-conf
-        #       mountPath: /etc/envoy
-        #       readOnly: true
-        #     - name: envoy-tmp
-        #       mountPath: /tmp
-        #   readinessProbe:
-        #     tcpSocket:
-        #       port: 8443
-        #     initialDelaySeconds: 2
-        #     periodSeconds: 5
+        - name: tls-proxy
+          image: envoyproxy/envoy:distroless-v1.40-latest
+          restartPolicy: Always
+          args: ["-c", "/etc/envoy/envoy.yaml"]
+          ports:
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tls-secret
+              mountPath: /etc/certs
+              readOnly: true
+            - name: envoy-conf
+              mountPath: /etc/envoy
+              readOnly: true
+            - name: envoy-tmp
+              mountPath: /tmp
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 2
+            failureThreshold: 4
 
       containers:
         # Main Jellyfin Monolith
@@ -152,7 +158,7 @@ spec:
               drop: ["ALL"]
           env:
             - name: JELLYFIN_hostwebclient
-              value: "false"
+              value: "true"
             - name: HOME
               value: /home/jellyfin
             - name: DOTNET_CLI_HOME
@@ -165,15 +171,11 @@ spec:
               value: /config/log
             - name: JELLYFIN_CACHE_DIR
               value: /cache
-          ports:
-            - name: http
-              containerPort: 8096
-              protocol: TCP
           volumeMounts:
             - name: jellyfin-media
               mountPath: /media
             - name: jellyfin-server-config
-              mountPath: /config/config
+              mountPath: /config
             - name: jellyfin-server-data
               mountPath: /config/data
             - name: jellyfin-server-cache
@@ -187,12 +189,25 @@ spec:
             httpGet:
               path: /health
               port: 8096
-            failureThreshold: 5
             periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 60
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 2
+
           livenessProbe:
             httpGet:
               path: /health
               port: 8096
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+
 

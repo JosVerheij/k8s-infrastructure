@@ -9,7 +9,7 @@ spec:
   selector:
     app.kubernetes.io/name: jellyfin-server
   ports:
-    - name: http
-      port: 8096
-      targetPort: 8096
+    - name: https
+      port: 443
+      targetPort: 8443
       protocol: TCP

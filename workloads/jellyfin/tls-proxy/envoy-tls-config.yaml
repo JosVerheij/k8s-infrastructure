@@ -2,8 +2,17 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: envoy-tls-config
+  namespace: app-jellyfin
 data:
   envoy.yaml: |
+    overload_manager:
+      refresh_interval: 0.25s
+      resource_monitors:
+      - name: "envoy.resource_monitors.global_downstream_max_connections"
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.resource_monitors.downstream_connections.v3.DownstreamConnectionsConfig
+          max_active_downstream_connections: 10000
+
     static_resources:
       listeners:
       - name: https_listener
@@ -11,6 +20,7 @@ data:
           socket_address:
             address: 0.0.0.0
             port_value: 8443
+        per_connection_buffer_limit_bytes: 20971520
         filter_chains:
         - transport_socket:
             name: envoy.transport_sockets.tls
@@ -38,7 +48,7 @@ data:
               route_config:
                 name: local_route
                 virtual_hosts:
-                - name: jellyfin_backend
+                - name: jellyfin
                   domains: ["*"]
                   routes:
                   - match:
@@ -49,6 +59,7 @@ data:
                       idle_timeout: 0s
                       upgrade_configs:
                       - upgrade_type: "websocket"
+
                   response_headers_to_add:
                   - header:
                       key: "strict-transport-security"
@@ -68,6 +79,7 @@ data:
                   - header:
                       key: "content-security-policy"
                       value: "default-src https: data: blob: ; img-src 'self' https: data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.youtube.com blob:; worker-src 'self' blob:; connect-src 'self'; object-src 'none'; font-src 'self';"
+
               http_filters:
               - name: envoy.filters.http.router
                 typed_config:
@@ -75,7 +87,8 @@ data:
 
       clusters:
       - name: jellyfin_local
-        type: STRICT_DNS
+        connect_timeout: 0.25s
+        type: STATIC
         lb_policy: ROUND_ROBIN
         load_assignment:
           cluster_name: jellyfin_local

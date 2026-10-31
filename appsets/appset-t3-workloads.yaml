@@ -14,11 +14,11 @@ spec:
         repoURL: https://github.com/JosVerheij/gitops-joveo.git
         revision: HEAD
         directories:
-          - path: "workloads/*/*"
+          - path: "workloads/*"
 
   template:
     metadata:
-      name: 'app-{{ index .path.segments 1 }}-{{ .path.basename }}'
+      name: 'app-{{ .path.basename }}'
     spec:
       project: t3-workloads
 
@@ -29,7 +29,7 @@ spec:
 
       destination:
         server: 'https://kubernetes.default.svc'
-        namespace: 'app-{{ index .path.segments 1 }}'
+        namespace: 'app-{{ .path.basename }}'
 
       syncPolicy:
         automated:
