@@ -7,6 +7,6 @@ data:
   overrides.json: |
     {
       "servers": [
-        "http://jellyfin-server.app-jellyfin.svc.cluster.local:8096"
+        ""
       ]
     }
