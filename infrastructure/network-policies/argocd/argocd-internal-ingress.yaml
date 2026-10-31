@@ -9,8 +9,7 @@ specs:
 - description: "Allow INGRESS from argo deployments"
   endpointSelector:
     matchLabels:
-      # io.kubernetes.pod.namespace: argocd
-      k8s-app: argocd-repo-server
+      io.cilium.k8s.policy.serviceaccount: argocd-repo-server
   ingress:
     - fromEndpoints:
       - matchLabels:

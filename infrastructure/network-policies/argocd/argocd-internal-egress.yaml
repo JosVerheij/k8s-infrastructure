@@ -11,7 +11,7 @@ specs:
   egress:
   - toEndpoints:
     - matchLabels:
-        k8s-app: argocd-repo-server
+        io.cilium.k8s.policy.serviceaccount: argocd-repo-server
     toPorts:
     - ports:
       - port: "8081"

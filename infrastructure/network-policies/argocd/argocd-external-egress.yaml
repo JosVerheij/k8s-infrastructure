@@ -8,7 +8,7 @@ spec:
   description: "Allow traffic to selected repository domains"
   endpointSelector:
     matchLabels:
-      k8s-app: argocd-repo-server
+      io.cilium.k8s.policy.serviceaccount: argocd-repo-server
   egress:
   # - toEndpoints:
   #     toEntities:
