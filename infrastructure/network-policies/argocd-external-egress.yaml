@@ -3,6 +3,7 @@ apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
   name: "allow-argocd-external-egress"
+  namespace: argocd
 spec:
   description: "Allow traffic to selected repository domains"
   endpointSelector:

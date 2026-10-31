@@ -3,6 +3,7 @@ apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
   name: "allow-argocd-internal-egress"
+  namespace: argocd
 specs:
 - description: "Allow traffic to argocd-repo-server"
   endpointSelector:
