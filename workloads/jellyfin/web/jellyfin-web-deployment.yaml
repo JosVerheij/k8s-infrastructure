@@ -20,7 +20,7 @@ spec:
       initContainers:
         - name: extract-web-assets
           image: ghcr.io/jellyfin/jellyfin:12
-          command: ["sh", "-c", "cp -a /jellyfin/jellyfin-web/. /target/"]
+          command: ["sh", "-c", "cp -R /jellyfin/jellyfin-web/. /target/"]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -40,6 +40,7 @@ spec:
           ports:
             - name: https
               containerPort: 8443
+              protocol: TCP
           resources:
             requests:
               cpu: 50m
@@ -101,7 +102,7 @@ spec:
           emptyDir: {}
         - name: tls-certs
           secret:
-            secretName: jellyfin-web-tls
+            secretName: jellyfin-web-internal-tls
         - name: envoy-config
           configMap:
             name: jellyfin-web-config

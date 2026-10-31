@@ -1,9 +1,9 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: jellyfin-tls
+  name: jellyfin-server-internal-tls
 spec:
-  secretName: jellyfin-internal-tls
+  secretName: jellyfin-server-internal-tls
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
