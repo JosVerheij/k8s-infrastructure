@@ -6,6 +6,8 @@
 # * https://cert-manager.io/docs/installation/best-practice/
 global:
   priorityClassName: system-cluster-critical
+  leaderElection:
+    namespace: cert-manager
 
 crds:
   enabled: true
