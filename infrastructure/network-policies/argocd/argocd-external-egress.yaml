@@ -10,6 +10,9 @@ spec:
     matchLabels:
       k8s-app: argocd-repo-server
   egress:
+  # - toEndpoints:
+  #     toEntities:
+  #       - world
   - toPorts:
     - ports:
       - port: "443"
