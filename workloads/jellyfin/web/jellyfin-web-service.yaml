@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: jellyfin-web
   labels:
-    app.kubernetes.io/name: jellyfin-web
+    name: jellyfin-web
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: jellyfin-web
+    name: jellyfin-web
   ports:
     - name: https
       port: 443

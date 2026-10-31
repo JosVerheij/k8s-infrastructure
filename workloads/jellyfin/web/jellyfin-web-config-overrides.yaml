@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jellyfin-web-config-overrides
+  namespace: app-jellyfin
+data:
+  overrides.json: |
+    {
+      "servers": [
+        "http://jellyfin-server.app-jellyfin.svc.cluster.local:8096"
+      ]
+    }

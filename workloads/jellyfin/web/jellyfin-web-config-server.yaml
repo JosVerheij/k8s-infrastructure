@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: jellyfin-web-config
+  name: jellyfin-web-config-server
 data:
   # Envoy configuration with native inotify watched_directory
   envoy.yaml: |

@@ -17,6 +17,7 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+
       initContainers:
         - name: extract-web-assets
           image: ghcr.io/jellyfin/jellyfin:12
@@ -31,6 +32,30 @@ spec:
           volumeMounts:
             - name: web-root
               mountPath: /target
+
+        # Step 2: Merge sparse overrides into target config.json
+        - name: merge-config
+          image:  ghcr.io/jqlang/jq:latest
+          command:
+            - sh
+            - -c
+            - |
+              jq -s '.[0] * .[1]' /target/config.json /overrides/overrides.json > /target/config.json.tmp
+              mv /target/config.json.tmp /target/config.json
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: web-root
+              mountPath: /target
+            - name: config-overrides
+              mountPath: /overrides
+              readOnly: true
+
       containers:
         # TLS termination & routing reverse proxy
         - name: envoy
@@ -98,23 +123,30 @@ spec:
               mountPath: /var/run
 
       volumes:
+        # Jellyfin web
         - name: web-root
           emptyDir: {}
+        - name: config-overrides
+          configMap:
+            name: jellyfin-web-overrides
+
         - name: tls-certs
           secret:
             secretName: jellyfin-web-internal-tls
+
         - name: envoy-config
           configMap:
-            name: jellyfin-web-config
+            name: jellyfin-web-config-server
             items:
               - key: envoy.yaml
                 path: envoy.yaml
         - name: nginx-config
           configMap:
-            name: jellyfin-web-config
+            name: jellyfin-web-config-server
             items:
               - key: nginx.conf
                 path: default.conf
+
         - name: envoy-tmp
           emptyDir: {}
         - name: nginx-tmp
