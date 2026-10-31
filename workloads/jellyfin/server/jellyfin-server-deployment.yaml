@@ -38,7 +38,7 @@ spec:
         # - name: envoy-conf
         #   configMap:
         #     name: envoy-tls-config
-        - name: jellyfin-xml-templates
+        - name: jellyfin-server-xml-templates
           configMap:
             name: jellyfin-server-config-templates
         # Dedicated scratch spaces to prevent cross-container bleed
@@ -67,6 +67,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              mkdir -p /config/config
+
               # Seed any XML template provided by the ConfigMap if absent on the PVC
               for src in /templates/*.xml; do
                 [ -e "$src" ] || continue
@@ -91,7 +93,7 @@ spec:
           volumeMounts:
             - name: jellyfin-config
               mountPath: /config
-            - name: jellyfin-xml-templates
+            - name: jellyfin-server-xml-templates
               mountPath: /templates
               readOnly: true
 
