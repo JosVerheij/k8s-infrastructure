@@ -2,7 +2,7 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "allow-argocd-internal"
+  name: "allow-argocd-internal-ingress"
   namespace: argocd
 specs:
 
