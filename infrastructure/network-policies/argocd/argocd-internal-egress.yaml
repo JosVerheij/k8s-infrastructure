@@ -7,7 +7,8 @@ metadata:
 specs:
 
 - description: "Allow EGRESS to argocd-repo-server"
-  endpointSelector: {}
+  endpointSelector:
+    matchLabels: {}
   egress:
   - toEndpoints:
     - matchLabels:
@@ -18,7 +19,8 @@ specs:
         protocol: TCP
 
 # - description: "Allow EGRESS to argocd-redis"
-#   endpointSelector: {}
+#   endpointSelector:
+#     matchLabels: {}
 #   egress:
 #   - toEndpoints:
 #     - matchLabels:
