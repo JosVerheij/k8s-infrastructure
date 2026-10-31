@@ -38,9 +38,9 @@ spec:
         # - name: envoy-conf
         #   configMap:
         #     name: envoy-tls-config
-        # - name: xml-templates
-        #   configMap:
-        #     name: jellyfin-config-templates
+        - name: jellyfin-xml-templates
+          configMap:
+            name: jellyfin-config-templates
         # Dedicated scratch spaces to prevent cross-container bleed
         - name: jellyfin-config
           emptyDir: {}
@@ -91,7 +91,7 @@ spec:
           volumeMounts:
             - name: jellyfin-config
               mountPath: /config
-            - name: xml-templates
+            - name: jellyfin-xml-templates
               mountPath: /templates
               readOnly: true
 
