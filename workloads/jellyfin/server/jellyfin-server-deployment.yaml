@@ -18,7 +18,6 @@ spec:
     spec:
       terminationGracePeriodSeconds: 60
 
-      # [REMEDIATION CIS 5.1.6]: Block Kube-API credential projection
       automountServiceAccountToken: false
 
       securityContext:
@@ -31,7 +30,6 @@ spec:
           type: RuntimeDefault
 
       volumes:
-        # [REMEDIATION CIS 5.4.1]: Enforce stricwt read-only file permissions
         # - name: tls-secret
         #   secret:
         #     secretName: jellyfin-internal-tls

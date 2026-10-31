@@ -1,11 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: jellyfin-tls
+  name: jellyfin-web-tls
+  namespace: default
 spec:
-  secretName: jellyfin-internal-tls
+  secretName: jellyfin-web-tls
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
   dnsNames:
-    - jellyfin.local.joveo.nl
+    - frontend.jellyfin.local.joveo.nl
