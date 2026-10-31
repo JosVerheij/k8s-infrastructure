@@ -4,8 +4,9 @@ kind: CiliumNetworkPolicy
 metadata:
   name: "allow-argocd-internal-egress"
   namespace: argocd
-spec:
-  description: "Allow internal egress within argocd"
+specs:
+
+- description: "Allow EGRESS to argocd-repo-server"
   endpointSelector:
     matchLabels: {}
   egress:
@@ -15,12 +16,17 @@ spec:
     toPorts:
     - ports:
       - port: "8081"
-
-  - toEndpoints:
-    - matchLabels:
-        io.cilium.k8s.policy.serviceaccount: argocd-redis
-    toPorts:
-    - ports:
-      - port: "6379"
         protocol: TCP
+
+# - description: "Allow EGRESS to argocd-redis"
+#   endpointSelector:
+#     matchLabels: {}
+#   egress:
+#   - toEndpoints:
+#     - matchLabels:
+#         io.cilium.k8s.policy.serviceaccount: argocd-redis
+#     toPorts:
+#     - ports:
+#       - port: "6379"
+#         protocol: TCP
 
