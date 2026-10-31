@@ -1,3 +1,4 @@
 resources:
+- 00-default-deny.yaml
 - argocd-internal-egress.yaml
 - argocd-external-egress.yaml
