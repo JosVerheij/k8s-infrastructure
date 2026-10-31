@@ -1,47 +1,4 @@
----
 apiVersion: v1
 kind: Namespace
 metadata:
   name: app-jellyfin
-
-# ---
-# # 2. Open Cilium ingress specifically from Gateway API to Jellyfin
-# apiVersion: cilium.io/v2
-# kind: CiliumNetworkPolicy
-# metadata:
-#   name: allow-gateway-ingress
-#   namespace: app-jellyfin
-# spec:
-#   endpointSelector:
-#     matchLabels:
-#       app.kubernetes.io/name: jellyfin
-#   ingress:
-#   - fromEndpoints:
-#     - matchLabels:
-#         io.kubernetes.pod.namespace: gateway-system # Or wherever your Cilium Gateway lives
-#     toPorts:
-#     - ports:
-#       - port: "8096"
-#         protocol: TCP
-
-# ---
-# # 3. Expose via Gateway API HTTPRoute
-# apiVersion: gateway.networking.k8s.io/v1
-# kind: HTTPRoute
-# metadata:
-#   name: jellyfin-route
-#   namespace: app-jellyfin
-# spec:
-#   parentRefs:
-#   - name: main-gateway
-#     namespace: gateway-system
-#   hostnames:
-#   - "jellyfin.home.arpa"
-#   rules:
-#   - matches:
-#     - path:
-#         type: PathPrefix
-#         value: /
-#     backendRefs:
-#     - name: jellyfin-service
-#       port: 8096
