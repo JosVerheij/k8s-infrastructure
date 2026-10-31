@@ -31,7 +31,7 @@ spec:
           type: RuntimeDefault
 
       volumes:
-        # [REMEDIATION CIS 5.4.1]: Enforce strict read-only file permissions
+        # [REMEDIATION CIS 5.4.1]: Enforce stricwt read-only file permissions
         # - name: tls-secret
         #   secret:
         #     secretName: jellyfin-internal-tls
@@ -40,7 +40,7 @@ spec:
         #     name: envoy-tls-config
         - name: jellyfin-xml-templates
           configMap:
-            name: jellyfin-config-templates
+            name: jellyfin-server-config-templates
         # Dedicated scratch spaces to prevent cross-container bleed
         - name: jellyfin-config
           emptyDir: {}
@@ -50,8 +50,8 @@ spec:
           emptyDir: {}
         - name: jellyfin-cache
           emptyDir: {}
-        - name: envoy-tmp
-          emptyDir: {}
+        # - name: envoy-tmp
+        #   emptyDir: {}
 
         # TEMP TEMP TEMP
         - name: jellyfin-data
