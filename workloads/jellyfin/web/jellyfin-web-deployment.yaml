@@ -1,7 +1,9 @@
+# [MODIFIED] Single initContainer using native sed; removed scratch jq container
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jellyfin-web
+  namespace: app-jellyfin
 spec:
   replicas: 1
   selector:
@@ -19,29 +21,15 @@ spec:
           type: RuntimeDefault
 
       initContainers:
-        - name: extract-web-assets
+        - name: extract-and-configure-web
           image: ghcr.io/jellyfin/jellyfin:12
-          command: ["sh", "-c", "cp -R /jellyfin/jellyfin-web/. /target/"]
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            runAsUser: 101
-            capabilities:
-              drop: ["ALL"]
-          volumeMounts:
-            - name: web-root
-              mountPath: /target
-
-        # Step 2: Merge sparse overrides into target config.json
-        - name: merge-config
-          image:  ghcr.io/jqlang/jq:latest
           command:
             - sh
             - -c
             - |
-              jq -s '.[0] * .[1]' /target/config.json /overrides/overrides.json > /target/config.json.tmp
-              mv /target/config.json.tmp /target/config.json
+              cp -R /jellyfin/jellyfin-web/. /target/
+              # Set default server to origin in upstream config.json without extra images
+              sed -i 's/"servers": \[\]/"servers": \[""\]/' /target/config.json
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -52,12 +40,8 @@ spec:
           volumeMounts:
             - name: web-root
               mountPath: /target
-            - name: config-overrides
-              mountPath: /overrides
-              readOnly: true
 
       containers:
-        # TLS termination & routing reverse proxy
         - name: envoy
           image: envoyproxy/envoy:distroless-v1.40-latest
           command: ["envoy"]
@@ -90,7 +74,6 @@ spec:
             - name: envoy-tmp
               mountPath: /tmp
 
-        # Cleartext local loopback static file server
         - name: web-static
           image: nginx/nginx-unprivileged:latest
           resources:
@@ -123,17 +106,11 @@ spec:
               mountPath: /var/run
 
       volumes:
-        # Jellyfin web
         - name: web-root
           emptyDir: {}
-        - name: config-overrides
-          configMap:
-            name: jellyfin-web-overrides
-
         - name: tls-certs
           secret:
             secretName: jellyfin-web-internal-tls
-
         - name: envoy-config
           configMap:
             name: jellyfin-web-config-server
@@ -146,7 +123,6 @@ spec:
             items:
               - key: nginx.conf
                 path: default.conf
-
         - name: envoy-tmp
           emptyDir: {}
         - name: nginx-tmp

@@ -1,9 +1,22 @@
+# [MODIFIED] Replaced <EXTERNAL_SERVER_HOST> with verified backend FQDN
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: jellyfin-web-config-server
+  namespace: app-jellyfin
 data:
-  # Envoy configuration with native inotify watched_directory
+  nginx.conf: |
+    server {
+        listen 127.0.0.1:8080;
+        server_name localhost;
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+    }
+
   envoy.yaml: |
     static_resources:
       listeners:
@@ -39,26 +52,22 @@ data:
                 - name: jellyfin_vhost
                   domains: ["*"]
                   routes:
-                  # 1. WebSocket endpoint
                   - match:
                       prefix: "/socket"
                     route:
                       cluster: jellyfin_backend
                       upgrade_configs:
                       - upgrade_type: "websocket"
-                  # 2. Exact root path -> local static UI
                   - match:
                       path: "/"
                     route:
                       cluster: local_static_web
-                  # 3. Static assets -> local static UI
                   - match:
                       safe_regex:
                         google_re2: {}
                         regex: '.*\.(html|js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json|map|webmanifest)$'
                     route:
                       cluster: local_static_web
-                  # 4. Fallback API and streaming endpoints -> external backend
                   - match:
                       prefix: "/"
                     route:
@@ -94,18 +103,5 @@ data:
             - endpoint:
                 address:
                   socket_address:
-                    address: <EXTERNAL_SERVER_HOST>
+                    address: jellyfin-server.app-jellyfin.svc.cluster.local
                     port_value: 8096
-
-  # Lightweight local NGINX configuration for serving static SPA files only
-  nginx.conf: |
-    server {
-        listen 127.0.0.1:8080;
-        server_name localhost;
-        root /usr/share/nginx/html;
-        index index.html;
-
-        location / {
-            try_files $uri $uri/ /index.html;
-        }
-    }
