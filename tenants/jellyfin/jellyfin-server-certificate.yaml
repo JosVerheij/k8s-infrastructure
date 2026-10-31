@@ -8,4 +8,4 @@ spec:
     name: letsencrypt-staging
     kind: ClusterIssuer
   dnsNames:
-    - backend.jellyfin.local.joveo.nl
+    - jellyfin.svc.local.joveo.nl
