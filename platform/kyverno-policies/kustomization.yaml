@@ -2,5 +2,4 @@ namespace: kyverno
 
 resources:
 - kyverno-policies/
-- network-policies/
 
