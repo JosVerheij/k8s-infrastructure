@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: jellyfin-config-templates
+  name: jellyfin-server-config-templates
   namespace: app-jellyfin
 data:
   network.xml: |
