@@ -2,10 +2,10 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "allow-argocd-internal-egress"
+  name: "allow-argocd-internal"
   namespace: argocd
 specs:
-- description: "Allow traffic to argocd-repo-server"
+- description: "Allow EGRESS to argocd-repo-server"
   endpointSelector:
     matchExpressions:
     - key: app.kubernetes.io/name
@@ -23,7 +23,7 @@ specs:
       - port: "8081"
         protocol: TCP
 
-- description: "Allow traffic to argocd-redis"
+- description: "Allow EGRESS to argocd-redis"
   endpointSelector:
     matchExpressions:
     - key: app.kubernetes.io/name
@@ -41,3 +41,21 @@ specs:
     - ports:
       - port: "6379"
         protocol: TCP
+
+- description: "Allow INGRESS from argo deployments"
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+  ingress:
+    - fromEndpoints:
+      - matchExpressions:
+        - key: app.kubernetes.io/name
+          operator: In
+          values:
+          - argocd-server
+          - argocd-application-controller
+          - argocd-applicationset-controller
+      toPorts:
+      - ports:
+        - port: "8081"
+          protocol: TCP
