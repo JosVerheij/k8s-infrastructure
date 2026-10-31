@@ -8,7 +8,7 @@ spec:
   description: "Allow traffic to selected repository domains"
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: argocd-repo-server
+      k8s-app: argocd-repo-server
   egress:
   - toPorts:
     - ports:

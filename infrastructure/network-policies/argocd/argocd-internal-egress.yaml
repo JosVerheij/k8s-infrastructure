@@ -1,0 +1,30 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-argocd-internal"
+  namespace: argocd
+specs:
+
+- description: "Allow EGRESS to argocd-repo-server"
+  endpointSelector: {}
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        k8s-app: argocd-repo-server
+    toPorts:
+    - ports:
+      - port: "8081"
+        protocol: TCP
+
+- description: "Allow EGRESS to argocd-redis"
+  endpointSelector: {}
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        k8s-app: argocd-redis
+    toPorts:
+    - ports:
+      - port: "6379"
+        protocol: TCP
+
