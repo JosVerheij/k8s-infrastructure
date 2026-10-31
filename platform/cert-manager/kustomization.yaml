@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: cert-manager
 
 resources:
-  - base/network-policies
+  - base/
 
 generators:
-  - base/
+  - generators/

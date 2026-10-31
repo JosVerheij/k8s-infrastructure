@@ -1,3 +1,2 @@
 resources:
 - network-policies/
-- secret-generator.yaml
